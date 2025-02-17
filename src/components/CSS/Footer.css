@@ -1,0 +1,78 @@
+.boring-footer {
+    position: absolute;
+    display: flex;
+    bottom: 0;
+    max-width: 10%;
+    align-items: center;
+    max-height: 15%;
+    padding: 10px 0;
+}
+
+.audio-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+audio {
+    height: 30px;
+}
+
+
+input[type="range"] {
+    -webkit-appearance: none;
+    width: 100px;
+    height: 5px;
+    background: #ddd;
+    border-radius: 5px;
+    outline: none;
+}
+
+/* For Chrome/Safari */
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #007bff;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* For Firefox */
+input[type="range"]::-moz-range-thumb {
+    background: #007bff;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+}
+
+/* Theme-specific styles */
+.light-mode .volume-control input[type="range"] {
+    background: var(--text-light);
+}
+
+.dark-mode .volume-control input[type="range"] {
+    background: var(--text-dark);
+}
+
+.light-mode .volume-control input[type="range"]::-webkit-slider-thumb {
+    background: var(--text-light);
+}
+
+.dark-mode .volume-control input[type="range"]::-webkit-slider-thumb {
+    background: var(--text-dark);
+}
+
+.light-mode .volume-control input[type="range"]::-moz-range-thumb {
+    background: var(--text-light);
+}
+
+.dark-mode .volume-control input[type="range"]::-moz-range-thumb {
+    background: var(--text-dark);
+}

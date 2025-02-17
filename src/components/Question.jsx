@@ -1,7 +1,10 @@
-import defaultImage from "../assets/heavy_stare.png";
+
 import { useState } from 'react';
 
-function Question({ question, answers, picture = defaultImage, onNextQuestion }) {
+function Question({ question, answers, picture, onNextQuestion }) {
+    const image_url = "../../public/Images/";
+    const defaultImage = "heavy_stare.png";
+
     const [selectedAnswer, setSelectedAnswer] = useState(null);
 
     const handleAnswerSelect = (answer) => {
@@ -20,7 +23,7 @@ function Question({ question, answers, picture = defaultImage, onNextQuestion })
             <div className="question-container">
                 <h2>{question}</h2>
                 <img
-                    src={picture}
+                    src={image_url + (picture || defaultImage)}
                     alt="Question"
                     className="question-image"
                 />

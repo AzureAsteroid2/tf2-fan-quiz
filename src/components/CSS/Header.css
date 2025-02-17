@@ -10,12 +10,22 @@
 
 .header-content {
     padding: 1rem 2rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
     max-width: 100%;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
+.header-content > * {
+    width: 33.333%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-align: center;
+}
+
 
 .light-mode .header-content {
     background-color: var(--background-light);
@@ -25,6 +35,10 @@
     background-color: var(--background-dark);
 }
 
-body {
-    padding-top: 70px;
+
+
+a {
+    margin: 0;
+    padding: 0;
+    display: inline-block;
 }
