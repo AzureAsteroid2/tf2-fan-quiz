@@ -17,6 +17,13 @@
     align-items: center;
 }
 
+.light-mode .header-content {
+    background-color: var(--background-light);
+}
+
+.dark-mode .header-content {
+    background-color: var(--background-dark);
+}
 
 body {
     padding-top: 70px;
