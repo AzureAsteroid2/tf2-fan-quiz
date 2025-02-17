@@ -1,13 +1,20 @@
 .boring-footer {
-    position: absolute;
-    display: flex;
+    position: sticky;
     bottom: 0;
-    max-width: 10%;
+    display: flex;
+    justify-content: center;
+    width: 80vh;
     align-items: center;
-    max-height: 15%;
-    padding: 10px 0;
+    max-height: 10vh;
+    margin: auto;
+    padding: 10px;
 }
-
+.boring-footer > * {
+    width: 50%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-align: center;
+}
 .audio-controls {
     display: flex;
     align-items: center;
@@ -75,4 +82,15 @@ input[type="range"]::-moz-range-thumb {
 
 .dark-mode .volume-control input[type="range"]::-moz-range-thumb {
     background: var(--text-dark);
+}
+
+.light-mode .github{
+    filter: invert(0);
+}
+
+.dark-mode .github{
+    filter: invert(1);
+}
+.dark-mode .github:hover{
+    filter: invert(1) drop-shadow(0 0 2em var(--react-shadow-dark));
 }

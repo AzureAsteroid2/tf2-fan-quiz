@@ -9,6 +9,7 @@
 }
 
 .header-content {
+    max-height: 10vh;
     padding: 1rem 2rem;
     word-wrap: break-word;
     overflow-wrap: break-word;
@@ -21,6 +22,7 @@
 
 .header-content > * {
     width: 33.333%;
+    max-height: 10vh;
     word-wrap: break-word;
     overflow-wrap: break-word;
     text-align: center;
@@ -35,7 +37,9 @@
     background-color: var(--background-dark);
 }
 
-
+body{
+    padding: 10vh 0;
+}
 
 a {
     margin: 0;
