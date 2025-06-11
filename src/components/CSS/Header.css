@@ -20,12 +20,20 @@
     align-items: center;
 }
 
+.theme{
+    font-size: calc(1.0vw + 1.0vh);
+}
+
 .header-content > * {
     width: 33.333%;
     max-height: 10vh;
     word-wrap: break-word;
     overflow-wrap: break-word;
     text-align: center;
+}
+
+.header-content > h2 {
+    font-size: calc(1.5vw + 1.5vh);
 }
 
 
@@ -37,9 +45,7 @@
     background-color: var(--background-dark);
 }
 
-body{
-    padding: 10vh 0;
-}
+
 
 a {
     margin: 0;

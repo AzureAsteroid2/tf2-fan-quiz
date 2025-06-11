@@ -31,10 +31,10 @@ const questions = [
   {
     question: "If Sniper was removed from the game, would the game be...?",
     answers: [
-      {text: "free to play.", value: 1},
-      {text: "worse.", value: 0},
-      {text: "better.", value: 0},
-      {text: "terrible, there's no more yellow liquid.", value: 5},
+      {text: "Free to play", value: 1},
+      {text: "Worse", value: 0},
+      {text: "Better", value: 0},
+      {text: "Terrible, there's no more yellow liquid", value: 5},
     ]
   },
   {
@@ -46,7 +46,57 @@ const questions = [
     ],
     picture: "drunk_santa.jpg",
   },
+  {
+    question: "How heavy is Heavy?",
 
+    answers: [
+      {text: "300 kilos", value: 1},
+      {text: "fatty", value: 0},
+      {text: "heavy like a brinks truck", value: 5},
+      {text: "he sat on my family and killed them", value: 2},
+    ],
+    picture: "heavy_heavy.gif"
+  },
+  {
+    question: "Who is the 4th class",
+    answers: [
+      {text: "Demoman", value: 1},
+      {text: "Madcap", value: 5},
+      {text: "Heavy", value: 0},
+      {text: "Unusual", value: 0}
+
+    ]
+  },
+  {
+    question: "Who is the best TF2uber",
+    answers: [
+      {text: "Fantastic Green", value: 0},
+      {text: "SlimWizardry", value: 0},
+      {text: "Mild Buddha", value: 0},
+      {text: "The Conclusive Video", value: 0},
+      {text: "Grandma Jane", value: 0},
+      {text: "Cooked", value: 0},
+    ]
+  },
+  {
+    question: "Why does nobody love you?",
+    answers: [
+      {text: "You're taking this quiz", value: 0},
+      {text: "You play TF2", value: 5},
+      {text: "Tax Evasion", value: -1},
+      {text: "You don't have 8 seconds of bleed", value: 1},
+    ]
+  },
+
+  {
+    question: "What is the best TF2?",
+    answers: [
+      {text: "Overwatch 2", value: 1},
+      {text: "Deep Rock Galactic", value: 5},
+      {text: "Team Fortress Classic", value: 0},
+      {text: "Team Fortress 2", value: 1},
+    ]
+  }
 
 ];
 
