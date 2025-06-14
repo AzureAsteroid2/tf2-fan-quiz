@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import ballImageSource from '../../public/Images/ball.png';
+import ballImageSource from '/Images/ball.png';
 function Pong({ onGameEnd }) {
     const canvasRef = useRef(null);
     const [isGameOver, setIsGameOver] = useState(false);
-    const winnerText = useRef("Game Over");  // Use ref instead of let
+    const winnerText = useRef("Game Over");
 
     useEffect(() => {
         const canvas = canvasRef.current;
