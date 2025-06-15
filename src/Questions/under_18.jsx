@@ -3,7 +3,7 @@ const questions = [
     question: "Is he hot?",
     answers: [
       { text: "Freak Yeah", value: 2 },
-      { text: "Uhhh No", value: 0 },
+      { text: "Uhhh No", value: -100 },
       {text: "It would be better if he oiled up", value: 5},
       {text: "Is that Jerma?", value: 1}
     ],
