@@ -1,11 +1,10 @@
-import 'react';
-import './CSS/Ad.css'
+import './CSS/Ad.css';
 
-function Ad({ image, url }) {
+function Ad({ image, url, position }) {
     return (
-        <div className="side-ad">
+        <div className={`edge-ad edge-ad-${position}`}>
             <a href={url} target="_blank" rel="noopener noreferrer">
-                <img src={image} alt="Ad" />
+                <img src={image} alt={`${position} ad`} />
             </a>
         </div>
     );

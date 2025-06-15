@@ -1,0 +1,366 @@
+body{
+  padding: 10vh 0 0 0;
+}
+
+
+:root {
+  /* Light mode variables */
+  --background-light: #ffffff;
+  --button-light-border: #d1d1d1;
+  --button-light: #efefef;
+  --text-light: #213547;
+  --shadow-light: rgba(75, 84, 255, 0.66);
+  --react-shadow-light: #61dafbaa;
+
+  /* Dark mode variables */
+  --background-dark: #242424;
+  --button-dark: #474747;
+  --button-dark-border: rgb(105 105 105 / 87%);
+  --text-dark: rgba(255, 255, 255, 0.87);
+  --shadow-dark: #646cffaa;
+  --react-shadow-dark: #61dafbaa;
+}
+
+/*logo stuff*/
+.logo {
+  height: 10vh;
+  transition: all 0.3s ease;
+}
+
+/* Extra small devices (phones) */
+@media screen and (max-width: 576px) {
+  .logo {
+    max-width: 150px;
+  }
+}
+
+/* Small devices (tablets) */
+@media screen and (min-width: 577px) and (max-width: 768px) {
+  .logo {
+    max-width: 200px;
+  }
+}
+
+/* Medium devices (small laptops) */
+@media screen and (min-width: 769px) and (max-width: 992px) {
+  .logo {
+    max-width: 250px;
+  }
+}
+
+/* Large devices (laptops/desktops) */
+@media screen and (min-width: 993px) {
+  .logo {
+    max-width: 300px;
+  }
+}
+
+/*Buttons*/
+.light-mode button{
+  border: 1px solid var(--button-light-border);
+  background-color: var(--button-light);
+  color: var(--text-light);
+}
+
+.dark-mode button{
+  border: 1px solid var(--button-dark-border);
+  background-color: var(--button-dark);
+  color: var(--text-dark);
+}
+
+.light-mode button:focus,
+.light-mode button:active {
+  outline: var(--background-light);
+}
+
+
+.dark-mode button:focus,
+.dark-mode button:active {
+  outline: var(--background-dark);
+}
+
+.light-mode {
+  background-color: var(--background-light);
+  color: var(--text-light);
+}
+
+
+.dark-mode {
+  background-color: var(--background-dark);
+  color: var(--text-dark);
+}
+
+html {
+  min-width: 100%;
+  min-height: 100vh;
+}
+#root {
+  padding: 10vh 0;
+  max-width: 100%;
+  max-height: 100vh;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.theme button{
+  max-width: 150px;
+}
+.light-mode .theme button{
+  background-color: var(--button-light);
+  color: var(--text-light);
+}
+.dark-mode .theme button{
+  background-color: var(--button-dark);
+  color: var(--text-dark);
+}
+.light-mode .card button {
+  background-color: var(--button-light);
+  color: var(--text-light);
+}
+
+.dark-mode .card button {
+  background-color: var(--button-dark);
+  color: var(--text-dark);
+}
+
+.light-mode .logo:hover {
+  filter: drop-shadow(0 0 2em var(--shadow-light));
+}
+
+.dark-mode .logo:hover {
+  filter: drop-shadow(0 0 2em var(--shadow-dark));
+}
+
+.light-mode .logo.react:hover {
+  filter: drop-shadow(0 0 2em var(--react-shadow-light));
+}
+
+.dark-mode .logo.react:hover {
+  filter: drop-shadow(0 0 2em var(--react-shadow-dark));
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+/* Theme toggle switch styles */
+.theme-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  margin: 1em;
+}
+
+.theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* Question css*/
+
+.question-image {
+  display: block;
+  margin: 20px auto; /* Centers and adds vertical spacing */
+  width: 300px; /* Fixed width */
+  height: 300px; /* Fixed height */
+  object-fit: contain; /* Maintains aspect ratio within fixed dimensions */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: adds subtle shadow */
+}
+
+.light-mode .question-container {
+  background-color: var(--background-light);
+  color: var(--text-light);
+}
+
+.dark-mode .question-container{
+  background-color: var(--background-dark);
+  color: var(--text-dark);
+}
+
+.answers-container {
+  display: grid;
+  flex-direction: column;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.light-mode .answer-container {
+  background-color: var(--background-light);
+  color: var(--text-light);
+  box-shadow: var(--button-dark);
+}
+
+.dark-mode .answer-container{
+  background-color: var(--background-dark);
+  color: var(--text-dark);
+}
+
+.answer-button {
+  border: 1px solid;
+  border-radius: 8px;
+  padding: 15px 20px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.dark-mode.answer-button{
+  border: 1px solid var(--text-dark) !important;
+  border-radius: 8px;
+  padding: 15px 20px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  color: var(--text-dark) !important;
+}
+
+.light-mode.answer-button{
+  border: 1px solid var(--text-light) !important;
+  border-radius: 8px;
+  padding: 15px 20px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  color: var(--text-light) !important;
+}
+
+
+.answer-button.selected {
+  background-color: #007bff !important;
+  color: white;
+}
+
+.next-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #28a745 !important;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.next-button:disabled {
+  background-color: #cccccc !important;
+  cursor: not-allowed;
+}
+
+
+.Score{
+  font-size: 4.0rem;
+}
+
+.negative-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: black; /* Optional for dramatic effect */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 2s forwards;
+  z-index: 9999; /* Make sure it’s above everything */
+}
+
+.scary {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+
+.site-container {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  min-height: 60vh;
+}
+
+.edge-ad {
+  position: fixed;
+  top: 12vh;
+  bottom: 0;
+  width: 15vw;
+  z-index: 500;
+  overflow: hidden;
+}
+
+.edge-ad-left {
+  left: 0;
+}
+
+.edge-ad-right {
+  right: 0;
+}
+
+.edge-ad img {
+  width: 15vw;
+  height: 100vh;
+  object-fit: fill; /* Stretch to fill container fully */
+  display: block;
+}
+
+
+/* Shift content inward to avoid overlap with ads */
+.site-content {
+  margin-left: 120px;  /* match ad width */
+  margin-right: 120px; /* match ad width */
+}
