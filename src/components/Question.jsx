@@ -7,7 +7,9 @@ function Question({ question, answers, picture, onNextQuestion }) {
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [isGambling, setIsGambling] = useState(false);
     const [cycleInterval, setCycleInterval] = useState(null);
-    const audioRef = useRef(new Audio("/sounds/gamble_sound.mp3"));
+    const gambleAudioStart = useRef(new Audio("/sounds/gamble_start.mp3"));
+    const gambleAudioEnd = useRef(new Audio("/sounds/gamble_end.mp3"));
+
 
     const handleAnswerSelect = (answer) => {
         if (!isGambling) {
@@ -18,11 +20,13 @@ function Question({ question, answers, picture, onNextQuestion }) {
     const handleGamble = () => {
         setIsGambling(true);
 
-        // Play sound
-        const audio = audioRef.current;
-        audio.currentTime = 0;
-        audio.loop = true;
-        audio.play();
+        // Play start sound
+        const audioStart = gambleAudioStart.current;
+        audioStart.currentTime = 0;
+        audioStart.loop = false;
+        audioStart.play().catch((e) => {
+            console.log("Start sound play blocked", e);
+        });
 
         let currentIndex = 0;
         const interval = setInterval(() => {
@@ -30,20 +34,30 @@ function Question({ question, answers, picture, onNextQuestion }) {
             currentIndex = (currentIndex + 1) % answers.length;
         }, 100);
 
-        setCycleInterval(interval);
-
         const duration = 1000 + Math.random() * 2000;
         setTimeout(() => {
             clearInterval(interval);
             const randomIndex = Math.floor(Math.random() * answers.length);
-            setSelectedAnswer(answers[randomIndex]);
+            const selected = answers[randomIndex];
+            setSelectedAnswer(selected);
             setIsGambling(false);
 
-            // Stop sound
-            audio.pause();
-            audio.currentTime = 0;
+            // Play end sound fresh
+            const endSound = new Audio("/sounds/gamble_end.mp3");
+            endSound.currentTime = 0;
+            endSound.play().catch((e) => {
+                console.log("End sound play blocked", e);
+            });
+
+            setTimeout(() => {
+                onNextQuestion(selected.value);
+                setSelectedAnswer(null);
+            }, 500);
+
         }, duration);
     };
+
+
 
     const handleNext = () => {
         if (selectedAnswer) {
