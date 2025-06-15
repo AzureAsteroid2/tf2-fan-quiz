@@ -26,7 +26,7 @@ const questions = [
       {text: "two", value: 0},
       {text: "twenty one", value: 1},
       {text: "scout cannot do the engineer's job he doesn't have the wrench", value: 3},
-    ]
+    ],
   },
   {
     question: "If Sniper was removed from the game, would the game be...?",

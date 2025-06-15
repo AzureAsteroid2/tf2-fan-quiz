@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 function Question({ question, answers, picture, onNextQuestion }) {
     const image_url = "../Images/";
@@ -7,6 +7,7 @@ function Question({ question, answers, picture, onNextQuestion }) {
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [isGambling, setIsGambling] = useState(false);
     const [cycleInterval, setCycleInterval] = useState(null);
+    const audioRef = useRef(new Audio("/sounds/gamble_sound.mp3"));
 
     const handleAnswerSelect = (answer) => {
         if (!isGambling) {
@@ -16,8 +17,14 @@ function Question({ question, answers, picture, onNextQuestion }) {
 
     const handleGamble = () => {
         setIsGambling(true);
-        let currentIndex = 0;
 
+        // Play sound
+        const audio = audioRef.current;
+        audio.currentTime = 0;
+        audio.loop = true;
+        audio.play();
+
+        let currentIndex = 0;
         const interval = setInterval(() => {
             setSelectedAnswer(answers[currentIndex]);
             currentIndex = (currentIndex + 1) % answers.length;
@@ -25,12 +32,17 @@ function Question({ question, answers, picture, onNextQuestion }) {
 
         setCycleInterval(interval);
 
+        const duration = 1000 + Math.random() * 2000;
         setTimeout(() => {
             clearInterval(interval);
             const randomIndex = Math.floor(Math.random() * answers.length);
             setSelectedAnswer(answers[randomIndex]);
             setIsGambling(false);
-        }, 1000 + Math.random() * 2000);
+
+            // Stop sound
+            audio.pause();
+            audio.currentTime = 0;
+        }, duration);
     };
 
     const handleNext = () => {

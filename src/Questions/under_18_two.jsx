@@ -56,25 +56,25 @@ const questions_two = [
 
   },
   {
-    question: "How many rockets go in the 'clip' of the stock rocket launcher",
+    question: "How many HeavyxMedic fanfics does the average tf2 player read through in a year.",
     answers: [
-      { text: "4", value: 5 },
-      { text: "1", value: 0 },
-      {text: "2", value: 0 },
-      {text: "44", value: -1}
+      { text: "99", value: 0 },
+      { text: "5142", value: 5 },
+      {text: "1111", value: 0 },
+      {text: "They don't read", value: 2}
     ],
-    picture: "buff_scout_no_background.png",
+    picture: "tf2-gay.gif",
 
   },
   {
-    question: "How many rockets go in the 'clip' of the stock rocket launcher",
+    question: "Are you subscribed to AzureAsteroid2?",
     answers: [
-      { text: "4", value: 5 },
-      { text: "1", value: 0 },
-      {text: "2", value: 0 },
-      {text: "44", value: -1}
+      { text: "Yes!", value: 1 },
+      { text: "He owes me 5 bucks so no.", value: 0 },
+      {text: "Who?", value: 1 },
+      {text: "No, he sucks", value: 5}
     ],
-    picture: "buff_scout_no_background.png",
+    picture: "azure-azureasteroid2.gif",
 
   },
   ];
