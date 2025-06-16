@@ -35,7 +35,7 @@ const adPairs = [
             url: "https://jobs.mchire.com/jobs?page_size=10&page_number=1&keyword=crew%20member&sort_by=score&sort_order=DESC",
         },
         right: {
-            image: "/Images/ads/banana_table.jpg",
+            image: "/Images/ads/banana_table.png",
             url: "https://wiki.teamfortress.com/wiki/Second_Banana",
         }
     }

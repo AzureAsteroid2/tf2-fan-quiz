@@ -336,7 +336,7 @@ input:checked + .slider:before {
 
 .edge-ad {
   position: fixed;
-  top: 12vh;
+  top: 14vh;
   bottom: 0;
   width: 15vw;
   z-index: 500;
@@ -353,7 +353,7 @@ input:checked + .slider:before {
 
 .edge-ad img {
   width: 15vw;
-  height: 100vh;
+  height: 86vh;
   object-fit: fill; /* Stretch to fill container fully */
   display: block;
 }
