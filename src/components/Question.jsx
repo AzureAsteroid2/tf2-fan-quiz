@@ -1,14 +1,14 @@
 import { useRef, useState } from 'react';
 
 function Question({ question, answers, picture, onNextQuestion }) {
-    const image_url = "../Images/";
+    const image_url = "./Images/";
     const defaultImage = "heavy_stare.png";
 
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [isGambling, setIsGambling] = useState(false);
     const [cycleInterval, setCycleInterval] = useState(null);
-    const gambleAudioStart = useRef(new Audio("/sounds/gamble_start.mp3"));
-    const gambleAudioEnd = useRef(new Audio("/sounds/gamble_end.mp3"));
+    const gambleAudioStart = useRef(new Audio("./sounds/gamble_start.mp3"));
+    const gambleAudioEnd = useRef(new Audio("./sounds/gamble_end.mp3"));
 
 
     const handleAnswerSelect = (answer) => {
@@ -43,7 +43,7 @@ function Question({ question, answers, picture, onNextQuestion }) {
             setIsGambling(false);
 
             // Play end sound fresh
-            const endSound = new Audio("/sounds/gamble_end.mp3");
+            const endSound = new Audio("./sounds/gamble_end.mp3");
             endSound.currentTime = 0;
             endSound.play().catch((e) => {
                 console.log("End sound play blocked", e);
