@@ -41,7 +41,7 @@ function Footer() {
                     ref={audioRef}
                     loop
                     autoPlay
-                    src="../Songs/Pub Stompin.mp3"
+                    src="./Songs/Pub Stompin.mp3"
                     volume={volume / 100}
                 >
                     Your browser hates you and will not let you listen to epic music
