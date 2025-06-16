@@ -19,7 +19,7 @@ jobs:
           node-version: 20  # or whatever version you use
 
       - name: Install dependencies
-        run: npm ci
+        run: npm i
 
       - name: Build Vite app
         run: npm run build
