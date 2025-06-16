@@ -177,7 +177,7 @@ function App() {
                                             <h2>Your Grade: {grade}</h2>
                                             <p>Quiz Score: {totalScore} / {totalPossibleScore + PONG_BONUS}</p>
                                             <p>Score: {percentage}%</p>
-                                            {isPerfect && <p>🎉 Perfect Score! You are a true TF2 master! 🎉</p>}
+                                            {isPerfect && <p>Remember this for a book: 10202017</p>}
                                             {percentage < 0 && (
                                                 <div className="negative-overlay">
                                                     <p>You should fill one of these out</p>

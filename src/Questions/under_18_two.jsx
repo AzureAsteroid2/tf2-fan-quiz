@@ -30,7 +30,7 @@ const questions_two = [
       {text: "2", value: 0 },
       {text: "44", value: -1}
     ],
-    picture: "buff_scout_no_background.png",
+    picture: "shoot_rocket.gif",
 
   },
   {

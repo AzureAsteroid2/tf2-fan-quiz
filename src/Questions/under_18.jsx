@@ -27,6 +27,7 @@ const questions = [
       {text: "twenty one", value: 1},
       {text: "scout cannot do the engineer's job he doesn't have the wrench", value: 3},
     ],
+    picture: "stare_scout.jpg",
   },
   {
     question: "If Sniper was removed from the game, would the game be...?",
@@ -35,7 +36,8 @@ const questions = [
       {text: "Worse", value: -1},
       {text: "Better", value: -1},
       {text: "Terrible, there's no more yellow liquid", value: 5},
-    ]
+    ],
+    picture: "sniper_jarate_mouth.jpg",
   },
   {
     question: "Is Santa a good guy?",
@@ -76,7 +78,8 @@ const questions = [
       {text: "The Conclusive Video", value: 0},
       {text: "Grandma Jane", value: 0},
       {text: "Cooked", value: 0},
-    ]
+    ],
+    picture: "demoknight_weezer.png",
   },
   {
     question: "Why does nobody love you?",
