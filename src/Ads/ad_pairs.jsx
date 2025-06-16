@@ -28,6 +28,16 @@ const adPairs = [
             image: "/Images/ads/peejar.jpg",
             url: "https://tenor.com/view/cat-meme-pee-cat-pee-funny-lmfao-gif-14727908981812019274",
         }
+    },
+    {
+        left: {
+            image: "/Images/ads/were_recruiting_tf2_ai.png",
+            url: "https://jobs.mchire.com/jobs?page_size=10&page_number=1&keyword=crew%20member&sort_by=score&sort_order=DESC",
+        },
+        right: {
+            image: "/Images/ads/banana_table.jpg",
+            url: "https://wiki.teamfortress.com/wiki/Second_Banana",
+        }
     }
 
 ];

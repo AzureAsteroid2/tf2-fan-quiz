@@ -3,7 +3,7 @@ const questions = [
     question: "Is he hot?",
     answers: [
       { text: "Freak Yeah", value: 2 },
-      { text: "Uhhh No", value: -100 },
+      { text: "Uhhh No", value: -3 },
       {text: "It would be better if he oiled up", value: 5},
       {text: "Is that Jerma?", value: 1}
     ],
@@ -13,16 +13,16 @@ const questions = [
   {
     question: "Which banana is this?",
     answers: [
-      {text: "1st", value: 0},
+      {text: "1st", value: -1},
       {text: "2nd", value: 5},
-      {text: "1987th", value: 0},
+      {text: "1987th", value: -2},
     ],
     picture: "Second_Banana.png",
   },
   {
     question: "How many scouts does it take to change a lightbulb?",
     answers: [
-      {text: "one", value: 0},
+      {text: "one", value: -1},
       {text: "two", value: 0},
       {text: "twenty one", value: 1},
       {text: "scout cannot do the engineer's job he doesn't have the wrench", value: 3},
@@ -32,8 +32,8 @@ const questions = [
     question: "If Sniper was removed from the game, would the game be...?",
     answers: [
       {text: "Free to play", value: 1},
-      {text: "Worse", value: 0},
-      {text: "Better", value: 0},
+      {text: "Worse", value: -1},
+      {text: "Better", value: -1},
       {text: "Terrible, there's no more yellow liquid", value: 5},
     ]
   },
@@ -41,7 +41,7 @@ const questions = [
     question: "Is Santa a good guy?",
     answers: [
       {text: "nah", value: 5},
-      {text: "yeah", value: 0},
+      {text: "yeah", value: -3},
       {text: "Good only on Sundays", value: -2},
     ],
     picture: "drunk_santa.jpg",
@@ -51,7 +51,7 @@ const questions = [
 
     answers: [
       {text: "300 kilos", value: 1},
-      {text: "fatty", value: 0},
+      {text: "fatty", value: 1},
       {text: "heavy like a brinks truck", value: 5},
       {text: "he sat on my family and killed them", value: 2},
     ],
@@ -62,8 +62,8 @@ const questions = [
     answers: [
       {text: "Demoman", value: 1},
       {text: "Madcap", value: 5},
-      {text: "Heavy", value: 0},
-      {text: "Unusual", value: 0}
+      {text: "Heavy", value: -1},
+      {text: "Unusual", value: -2}
 
     ]
   },
