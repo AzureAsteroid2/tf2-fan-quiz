@@ -21,7 +21,12 @@ function Header() {
     return (
         <header className="sticky-header">
             <div className="header-content">
-                <h2>Buff TF2 Mercs in your area</h2>
+                <h2>
+                    <a href="https://www.priorygroup.com/blog/signs-you-should-see-a-therapist" target="_blank" className="unstyled-link">
+                        Buff TF2 Mercs in your area
+                    </a>
+                </h2>
+
                 <a href="steam://run/440" target="_blank"><img className={"logo"} src={logo} alt="logo"  /></a>
                 <button className="theme" onClick={() => toggleTheme()}>
                     The theme is {isDarkMode ? 'dark' : 'light'}

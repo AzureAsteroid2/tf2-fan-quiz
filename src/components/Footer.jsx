@@ -1,15 +1,21 @@
-import { useState, useRef } from 'react';
-import "./CSS/Footer.css"
+import { useState, useRef, useEffect } from 'react';
+import "./CSS/Footer.css";
 import github from "../assets/github.svg";
 
 function Footer() {
-    const [volume, setVolume] = useState(100); // Start at 100%
+    const songs = [
+        "./Songs/Pub Stompin.mp3",
+        "./Songs/Banana No 2.mp3",
+        // Add more as needed
+    ];
+
+    const [volume, setVolume] = useState(100);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [currentSongIndex, setCurrentSongIndex] = useState(0);
     const audioRef = useRef(null);
 
     const handleVolumeChange = (e) => {
         let newVolume = parseInt(e.target.value);
-
         newVolume = Math.min(100, Math.max(0, newVolume));
         setVolume(newVolume);
 
@@ -28,24 +34,43 @@ function Footer() {
         }
     };
 
+    const playSongAtIndex = (index) => {
+        const newIndex = (index + songs.length) % songs.length; // wrap around
+        setCurrentSongIndex(newIndex);
+    };
+
+    const handleSongEnd = () => {
+        playSongAtIndex(currentSongIndex + 1);
+    };
+
+    useEffect(() => {
+        if (audioRef.current) {
+            audioRef.current.src = songs[currentSongIndex];
+            audioRef.current.volume = volume / 100;
+            if (isPlaying) {
+                audioRef.current.play();
+            }
+        }
+    }, [currentSongIndex, volume, isPlaying]);
+
     return (
         <footer className="boring-footer">
             <div className="audio-controls">
-                <button
-                    onClick={togglePlay}
-                    className="play-pause-button"
-                >
-                    {isPlaying ? 'Pause' : 'Play'}
-                </button>
+                <div className="button-group">
+                    <button onClick={togglePlay}>
+                        {isPlaying ? 'Pause' : 'Play'}
+                    </button>
+                    <button onClick={() => playSongAtIndex(currentSongIndex - 1)}>Previous</button>
+                    <button onClick={() => playSongAtIndex(currentSongIndex + 1)}>Next</button>
+                </div>
+
                 <audio
                     ref={audioRef}
-                    loop
-                    autoPlay
-                    src="./Songs/Pub Stompin.mp3"
-                    volume={volume / 100}
+                    onEnded={handleSongEnd}
                 >
                     Your browser hates you and will not let you listen to epic music
                 </audio>
+
                 <div className="volume-control">
                     <label htmlFor="volume">Volume:</label>
                     <input
@@ -59,8 +84,8 @@ function Footer() {
                     <span className="volume-symbol">%</span>
                 </div>
             </div>
-            <a href="https://github.com/AzureAsteroid2/tf2-fan-quiz" target="_blank">
-                <img alt="github" src={github} className={"logo github"} />
+            <a href="https://github.com/AzureAsteroid2/tf2-fan-quiz" target="_blank" rel="noopener noreferrer">
+                <img alt="github" src={github} className="logo github" />
             </a>
         </footer>
     );
