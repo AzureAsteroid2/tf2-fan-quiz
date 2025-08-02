@@ -5,9 +5,11 @@ import questions_two from "./Questions/under_18_two.jsx"
 import Question from "./components/Question.jsx";
 import Header from "./components/Header.jsx";
 import adPairs from "./Ads/ad_pairs.jsx";
+import popupAds from "./Ads/popup_ads.jsx";
 import Ad from "./components/Ad.jsx";
 import Footer from "./components/Footer.jsx";
 import Pong from "./components/Pong.jsx";
+import AdPopup from "./components/AdPopup.jsx";
 import {useCallback, useEffect, useRef, useState} from "react";
 
 function App() {
@@ -19,13 +21,17 @@ function App() {
         const randomIndex = Math.floor(Math.random() * adPairs.length);
         return adPairs[randomIndex];
     });
+    const [showAdPopup, setShowAdPopup] = useState(false);
+    const [popupAd, setPopupAd] = useState(null);
+    const [popupStyle, setPopupStyle] = useState({});
+    const adPopupTimerRef = useRef(null);
+    const questionsAnsweredRef = useRef(0);
 
     const [totalScore, setTotalScore] = useState(0);
     const [totalPossibleScore, setTotalPossibleScore] = useState(0);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [isStarted, setIsStarted] = useState(false);
     const PONG_BONUS = 10;
-
 
     // Calculate total possible score when component mounts
     useEffect(() => {
@@ -39,6 +45,35 @@ function App() {
         );
         setTotalPossibleScore(max1 + max2);
     }, []);
+
+    // Handle random ad popup
+    useEffect(() => {
+        if (phase !== "first" && phase !== "second") return;
+
+        const showRandomAd = () => {
+            const prob = Math.min(0.2 + 0.05 * questionsAnsweredRef.current, 1.0);
+            if (Math.random() < prob) {
+                const randomIndex = Math.floor(Math.random() * popupAds.length);
+                setPopupAd(popupAds[randomIndex]);
+                const randomTop = Math.floor(Math.random() * 61) + 30;
+                const randomLeft = Math.floor(Math.random() * 61) + 30;
+                setPopupStyle({
+                    top: `${randomTop}%`,
+                    left: `${randomLeft}%`,
+                    transform: 'translate(-50%, -50%)'
+                });
+                setShowAdPopup(true);
+            }
+        };
+
+        adPopupTimerRef.current = setInterval(() => {
+            showRandomAd();
+        }, Math.floor(Math.random() * 9000) + 1000); // Random interval between 1-10 seconds
+
+        return () => {
+            if (adPopupTimerRef.current) clearInterval(adPopupTimerRef.current);
+        };
+    }, [phase, adPair]);
 
     useEffect(() => {
         if (phase !== "second") return;
@@ -68,6 +103,7 @@ function App() {
         }
 
         setTotalScore(prev => prev + answerValue);
+        questionsAnsweredRef.current += 1;
 
         if (phase === "first") {
             if (currentQuestionIndex + 1 < questions.length) {
@@ -124,6 +160,11 @@ function App() {
         setIsStarted(true);
     };
 
+    const handleAdClose = () => {
+        setShowAdPopup(false);
+        setPopupAd(null);
+    };
+
     return (
         <>
             <Header />
@@ -132,65 +173,73 @@ function App() {
             <Ad image={adPair.right.image} url={adPair.right.url} position="right" />
 
             <div className="site-content">
-                    <div className="card">
-                        {!isStarted && (
-                            <>
-                                <h1>Are you a Team Fortress 2 Fan?</h1>
-                                <button className="start-button" onClick={handleStart}>Start Quiz</button>
-                            </>
-                        )}
+                <div className="card">
+                    {!isStarted && (
+                        <>
+                            <h1>Are you a Team Fortress 2 Fan?</h1>
+                            <button className="start-button" onClick={handleStart}>Start Quiz</button>
+                        </>
+                    )}
 
-                        {isStarted && (
-                            <>
-                                {phase === "first" && (
+                    {isStarted && (
+                        <>
+                            {phase === "first" && (
+                                <Question
+                                    {...questions[currentQuestionIndex]}
+                                    onNextQuestion={handleNextQuestion}
+                                />
+                            )}
+
+                            {phase === "pong" && (
+                                <Pong onGameEnd={handlePongComplete} />
+                            )}
+
+                            {phase === "second" && (
+                                <div>
+                                    <div className="timer">Time left: {timer}</div>
                                     <Question
-                                        {...questions[currentQuestionIndex]}
+                                        {...questions_two[currentQuestionIndex]}
                                         onNextQuestion={handleNextQuestion}
                                     />
-                                )}
+                                </div>
+                            )}
 
-                                {phase === "pong" && (
-                                    <Pong onGameEnd={handlePongComplete} />
-                                )}
+                            {phase === "done" && (
+                                <div className="Score">
+                                    <h2>You have completed the quiz!!!</h2>
+                                    <button onClick={() => setPhase("grade")}>See Grade</button>
+                                </div>
+                            )}
 
-                                {phase === "second" && (
-                                    <div>
-                                        <div className="timer">Time left: {timer}</div>
-                                        <Question
-                                            {...questions_two[currentQuestionIndex]}
-                                            onNextQuestion={handleNextQuestion}
-                                        />
+                            {phase === "grade" && (() => {
+                                const { percentage, grade, isPerfect } = getGrade();
+                                return (
+                                    <div className="grade-container">
+                                        <h2>Your Grade: {grade}</h2>
+                                        <p>Quiz Score: {totalScore} / {totalPossibleScore + PONG_BONUS}</p>
+                                        <p>Score: {percentage}%</p>
+                                        {isPerfect && <p>Remember this for a book: 10202017</p>}
+                                        {percentage < 0 && (
+                                            <div className="negative-overlay">
+                                                <p>You should fill one of these out</p>
+                                                <img src="" alt="Negative Score" className="scary" />
+                                            </div>
+                                        )}
                                     </div>
-                                )}
-
-                                {phase === "done" && (
-                                    <div className="Score">
-                                        <h2>You have completed the quiz!!!</h2>
-                                        <button onClick={() => setPhase("grade")}>See Grade</button>
-                                    </div>
-                                )}
-
-                                {phase === "grade" && (() => {
-                                    const { percentage, grade, isPerfect } = getGrade();
-                                    return (
-                                        <div className="grade-container">
-                                            <h2>Your Grade: {grade}</h2>
-                                            <p>Quiz Score: {totalScore} / {totalPossibleScore + PONG_BONUS}</p>
-                                            <p>Score: {percentage}%</p>
-                                            {isPerfect && <p>Remember this for a book: 10202017</p>}
-                                            {percentage < 0 && (
-                                                <div className="negative-overlay">
-                                                    <p>You should fill one of these out</p>
-                                                    <img src="" alt="Negative Score" className="scary" />
-                                                </div>
-                                            )}
-                                        </div>
-                                    );
-                                })()}
-                            </>
-                        )}
-                    </div>
+                                );
+                            })()}
+                        </>
+                    )}
                 </div>
+            </div>
+
+            {showAdPopup && popupAd && (
+                <AdPopup
+                    image={popupAd.image}
+                    onClose={handleAdClose}
+                    popupStyle={popupStyle}
+                />
+            )}
 
             <Footer />
         </>
