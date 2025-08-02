@@ -46,7 +46,7 @@ function App() {
         setTotalPossibleScore(max1 + max2);
     }, []);
 
-    // Handle random ad popup
+
     useEffect(() => {
         if (phase !== "first" && phase !== "second") return;
 
@@ -55,8 +55,8 @@ function App() {
             if (Math.random() < prob) {
                 const randomIndex = Math.floor(Math.random() * popupAds.length);
                 setPopupAd(popupAds[randomIndex]);
-                const randomTop = Math.floor(Math.random() * 61) + 30;
-                const randomLeft = Math.floor(Math.random() * 61) + 30;
+                const randomTop = Math.floor(Math.random() * 61) + 25;
+                const randomLeft = Math.floor(Math.random() * 61) + 10;
                 setPopupStyle({
                     top: `${randomTop}%`,
                     left: `${randomLeft}%`,
@@ -68,7 +68,7 @@ function App() {
 
         adPopupTimerRef.current = setInterval(() => {
             showRandomAd();
-        }, Math.floor(Math.random() * 9000) + 1000); // Random interval between 1-10 seconds
+        }, Math.floor(Math.random() * 9000) + 1000);
 
         return () => {
             if (adPopupTimerRef.current) clearInterval(adPopupTimerRef.current);

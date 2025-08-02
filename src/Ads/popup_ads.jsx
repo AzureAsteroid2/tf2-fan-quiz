@@ -38,6 +38,9 @@ const popupAds = [
     {
         image: "./Images/popupads/sniper-tf2.gif",
     },
+    {
+        image: "./Images/popupads/scout_loss.png",
+    },
     // Add more popup ads as needed
 ];
 
