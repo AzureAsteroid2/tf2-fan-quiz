@@ -1,4 +1,4 @@
-// import './CSS/AdPopup.css';
+import './CSS/AdPopup.css';
 
 function AdPopup({ image, onClose, popupStyle }) {
     return (

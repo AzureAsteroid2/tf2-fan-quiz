@@ -5,7 +5,6 @@ import logo from "../assets/logo.svg";
 function Header() {
     const [isDarkMode, setIsDarkMode] = useState(() => {
         const savedTheme = localStorage.getItem('theme');
-        console.log(savedTheme);
         return savedTheme;
         // return savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
     });
