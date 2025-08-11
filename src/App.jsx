@@ -10,7 +10,7 @@ import Ad from "./components/Ad.jsx";
 import Footer from "./components/Footer.jsx";
 import Pong from "./components/Pong.jsx";
 import AdPopup from "./components/AdPopup.jsx";
-import GuessQuote from "./components/GuessQuote.jsx";
+import GuessQuote from "./components/GuessQuote.jsx"; // New import for the quote game
 import {useCallback, useEffect, useRef, useState} from "react";
 import ClassGuess from "./components/ClassGuess.jsx";
 
@@ -34,7 +34,7 @@ function App() {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [isStarted, setIsStarted] = useState(false);
     const PONG_BONUS = 10;
-    const CLASS_GUESS_BONUS = 12;
+    const CLASS_GUESS_BONUS = 36;
 
     // Calculate total possible score when component mounts
     useEffect(() => {

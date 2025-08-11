@@ -10,65 +10,164 @@ const classes = [
     { name: 'Engineer', image: './Images/class_silhouettes/engineer.png' },
     { name: 'Medic', image: './Images/class_silhouettes/medic.png' },
     { name: 'Sniper', image: './Images/class_silhouettes/sniper.png' },
-    // Add all 9 class_silhouettes
 ];
 
 function ClassGuess({ setTotalScore, onComplete }) {
-    const NUM_ROUNDS = 3;
-    const [round, setRound] = useState(0);
+    const [pool, setPool] = useState([]);
+    const [assignments, setAssignments] = useState({});
+    const [isGameOver, setIsGameOver] = useState(false);
     const [score, setScore] = useState(0);
-    const [selectedClasses, setSelectedClasses] = useState([]);
-    const [current, setCurrent] = useState(null);
-    const [options, setOptions] = useState([]);
 
     useEffect(() => {
         const shuffled = [...classes].sort(() => Math.random() - 0.5);
-        const sel = shuffled.slice(0, NUM_ROUNDS);
-        setSelectedClasses(sel);
-        setCurrent(sel[0]);
-        generateOptions(sel[0]);
+        setPool(shuffled);
+        const initialAssignments = {};
+        classes.forEach(c => initialAssignments[c.name] = null);
+        setAssignments(initialAssignments);
     }, []);
 
-    const generateOptions = (curr) => {
-        const wrong = [...classes]
-            .filter(c => c.name !== curr.name)
-            .sort(() => Math.random() - 0.5)
-            .slice(0, 3);
-        const opts = [...wrong, curr].sort(() => Math.random() - 0.5);
-        setOptions(opts);
+    const handleDrop = (ev, targetSlot) => {
+        ev.preventDefault();
+        const data = ev.dataTransfer.getData('application/json');
+        if (!data) return;
+        const dragged = JSON.parse(data);
+        const isFromPool = pool.some(c => c.name === dragged.name);
+        let fromSlot = null;
+        if (!isFromPool) {
+            fromSlot = Object.keys(assignments).find(s => assignments[s]?.name === dragged.name);
+        }
+        const currentInTarget = assignments[targetSlot];
+        setAssignments(prev => ({...prev, [targetSlot]: dragged}));
+        if (isFromPool) {
+            let newPool = pool.filter(c => c.name !== dragged.name);
+            if (currentInTarget) {
+                newPool = [...newPool, currentInTarget];
+            }
+            setPool(newPool);
+        } else if (fromSlot && fromSlot !== targetSlot) {
+            if (currentInTarget) {
+                setAssignments(prev => ({...prev, [fromSlot]: currentInTarget}));
+            } else {
+                setAssignments(prev => ({...prev, [fromSlot]: null}));
+            }
+        }
     };
 
-    const guess = (choice) => {
-        if (choice === current.name) {
-            setScore(s => s + 1);
-            setTotalScore(prev => prev + 4);
+    const handleDropToPool = (ev) => {
+        ev.preventDefault();
+        const data = ev.dataTransfer.getData('application/json');
+        if (!data) return;
+        const dragged = JSON.parse(data);
+        const fromSlot = Object.keys(assignments).find(s => assignments[s]?.name === dragged.name);
+        if (fromSlot) {
+            setAssignments(prev => ({...prev, [fromSlot]: null}));
+            setPool(prev => [...prev, dragged]);
         }
-        if (round < NUM_ROUNDS - 1) {
-            const nextRound = round + 1;
-            setRound(nextRound);
-            const nextCurr = selectedClasses[nextRound];
-            setCurrent(nextCurr);
-            generateOptions(nextCurr);
-        } else {
-            setRound(NUM_ROUNDS);
+    };
+
+    const handleFinish = () => {
+        let correct = 0;
+        for (let slot of classes) {
+            const assigned = assignments[slot.name];
+            if (assigned && assigned.name === slot.name) {
+                correct++;
+            }
         }
+        setScore(correct);
+        setTotalScore(prev => prev + correct * 4);
+        setIsGameOver(true);
     };
 
     return (
         <div className="mini-game">
             <h3>Guess the TF2 Class</h3>
-            {round < NUM_ROUNDS ? (
+            {!isGameOver ? (
                 <>
-                    <img src={current?.image} alt="Silhouette" style={{ filter: 'blur(5px)' }} />
-                    <div className="answers-container">
-                        {options.map((cls) => (
-                            <button key={cls.name} className="answer-button" onClick={() => guess(cls.name)}>{cls.name}</button>
-                        ))}
+                    <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'flex-start'}}>
+                        <div
+                            className="pool"
+                            style={{
+                                display: 'flex',
+                                flexWrap: 'wrap',
+                                width: '40%',
+                                border: '1px dashed gray',
+                                minHeight: '300px',
+                                padding: '10px',
+                                alignContent: 'flex-start',
+                                boxSizing: 'border-box'
+                            }}
+                            onDragOver={e => e.preventDefault()}
+                            onDrop={handleDropToPool}
+                        >
+                            {pool.map(cls => (
+                                <img
+                                    key={cls.name}
+                                    src={cls.image}
+                                    alt="Silhouette"
+                                    style={{
+                                        filter: 'blur(5px)',
+                                        width: '80px',
+                                        height: '80px',
+                                        margin: '5px',
+                                        cursor: 'grab',
+                                        objectFit: 'contain'
+                                    }}
+                                    draggable
+                                    onDragStart={ev => ev.dataTransfer.setData('application/json', JSON.stringify(cls))}
+                                />
+                            ))}
+                        </div>
+                        <div
+                            className="slots"
+                            style={{
+                                display: 'grid',
+                                gridTemplateColumns: 'repeat(3, 1fr)',
+                                gap: '10px',
+                                width: '50%'
+                            }}
+                        >
+                            {classes.map(slot => (
+                                <div key={slot.name} style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                                    <span style={{marginBottom: '5px'}}>{slot.name}</span>
+                                    <div
+                                        className="drop-square"
+                                        style={{
+                                            width: '80px',
+                                            height: '80px',
+                                            border: '1px solid black',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            backgroundColor: '#f9f9f9'
+                                        }}
+                                        onDragOver={e => e.preventDefault()}
+                                        onDrop={e => handleDrop(e, slot.name)}
+                                    >
+                                        {assignments[slot.name] && (
+                                            <img
+                                                src={assignments[slot.name].image}
+                                                alt="Silhouette"
+                                                style={{
+                                                    filter: 'blur(5px)',
+                                                    width: '100%',
+                                                    height: '100%',
+                                                    objectFit: 'contain',
+                                                    cursor: 'grab'
+                                                }}
+                                                draggable
+                                                onDragStart={ev => ev.dataTransfer.setData('application/json', JSON.stringify(assignments[slot.name]))}
+                                            />
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
+                    <button onClick={handleFinish} style={{marginTop: '20px'}}>Finish</button>
                 </>
             ) : (
                 <div>
-                    <p>Game Over! Score: {score}/{NUM_ROUNDS} (+{score * 4} points)</p>
+                    <p>Game Over! Score: {score}/9 (+{score * 4} points)</p>
                     <button onClick={onComplete}>Continue</button>
                 </div>
             )}
