@@ -105,7 +105,6 @@ function ClassGuess({ setTotalScore, onComplete }) {
                                     src={cls.image}
                                     alt="Silhouette"
                                     style={{
-                                        filter: 'blur(5px)',
                                         width: '80px',
                                         height: '80px',
                                         margin: '5px',
@@ -148,7 +147,6 @@ function ClassGuess({ setTotalScore, onComplete }) {
                                                 src={assignments[slot.name].image}
                                                 alt="Silhouette"
                                                 style={{
-                                                    filter: 'blur(5px)',
                                                     width: '100%',
                                                     height: '100%',
                                                     objectFit: 'contain',
