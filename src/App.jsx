@@ -10,7 +10,9 @@ import Ad from "./components/Ad.jsx";
 import Footer from "./components/Footer.jsx";
 import Pong from "./components/Pong.jsx";
 import AdPopup from "./components/AdPopup.jsx";
+import GuessQuote from "./components/GuessQuote.jsx";
 import {useCallback, useEffect, useRef, useState} from "react";
+import ClassGuess from "./components/ClassGuess.jsx";
 
 function App() {
     const [phase, setPhase] = useState("first"); // "first", "pong", "second", "done"
@@ -32,6 +34,7 @@ function App() {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [isStarted, setIsStarted] = useState(false);
     const PONG_BONUS = 10;
+    const CLASS_GUESS_BONUS = 12;
 
     // Calculate total possible score when component mounts
     useEffect(() => {
@@ -117,7 +120,7 @@ function App() {
                 setCurrentQuestionIndex(prev => prev + 1);
                 setTimer(timerTime);
             } else {
-                setPhase("done");
+                setPhase("silhouette");
             }
         }
     }, [phase, currentQuestionIndex, questions.length, questions_two.length]);
@@ -132,8 +135,12 @@ function App() {
         setCurrentQuestionIndex(0);
     };
 
+    const handleSilhouetteComplete = () => {
+        setPhase("done");
+    };
+
     const getGrade = () => {
-        const percentage = Math.round((totalScore / (totalPossibleScore + PONG_BONUS)) * 100);
+        const percentage = Math.round((totalScore / (totalPossibleScore + PONG_BONUS + CLASS_GUESS_BONUS)) * 100);
         let grade = "";
 
         if (percentage < 0) {
@@ -204,6 +211,12 @@ function App() {
                                 </div>
                             )}
 
+                            {phase === "silhouette" && (
+                                <div>
+                                    <ClassGuess setTotalScore={setTotalScore} onComplete={handleSilhouetteComplete}></ClassGuess>
+                                </div>
+                            )}
+
                             {phase === "done" && (
                                 <div className="Score">
                                     <h2>You have completed the quiz!!!</h2>
@@ -216,7 +229,7 @@ function App() {
                                 return (
                                     <div className="grade-container">
                                         <h2>Your Grade: {grade}</h2>
-                                        <p>Quiz Score: {totalScore} / {totalPossibleScore + PONG_BONUS}</p>
+                                        <p>Quiz Score: {totalScore} / {totalPossibleScore + PONG_BONUS + CLASS_GUESS_BONUS}</p>
                                         <p>Score: {percentage}%</p>
                                         {isPerfect && <p>Remember this for a book: 10202017</p>}
                                         {percentage < 0 && (
