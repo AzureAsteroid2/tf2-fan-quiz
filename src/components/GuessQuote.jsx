@@ -23,8 +23,19 @@ function GuessQuote({ setTotalScore, onComplete }) {
     const [isGameOver, setIsGameOver] = useState(false);
     const [score, setScore] = useState(0);
     const [buffers, setBuffers] = useState({});
+    const [isDark, setIsDark] = useState(false);
     const audioCtxRef = useRef(null);
     const sourceRef = useRef(null);
+
+    useEffect(() => {
+        const checkDarkMode = () => {
+            setIsDark(document.body.classList.contains('dark-mode'));
+        };
+        checkDarkMode();
+        const observer = new MutationObserver(checkDarkMode);
+        observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+        return () => observer.disconnect();
+    }, []);
 
     useEffect(() => {
         audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
@@ -73,8 +84,8 @@ function GuessQuote({ setTotalScore, onComplete }) {
 
         const filter = audioCtxRef.current.createBiquadFilter();
         filter.type = 'lowshelf';
-        filter.frequency.value = 300;
-        filter.gain.value = 20; // Boost bass
+        filter.frequency.value = 1000;
+        filter.gain.value = 5; // Boost bass
 
         source.connect(filter);
         filter.connect(audioCtxRef.current.destination);
@@ -135,9 +146,36 @@ function GuessQuote({ setTotalScore, onComplete }) {
         setIsGameOver(true);
     };
 
+    const SpeakerIcon = () => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+        </svg>
+    );
+
+    const theme = {
+        light: {
+            text: '#213547',
+            background: '#ffffff',
+            buttonBg: '#efefef',
+            buttonBorder: '#d1d1d1',
+            border: '#000',
+            dashedBorder: 'gray',
+        },
+        dark: {
+            text: 'rgba(255, 255, 255, 0.87)',
+            background: '#242424',
+            buttonBg: '#474747',
+            buttonBorder: 'rgb(105 105 105 / 87%)',
+            border: '#ccc',
+            dashedBorder: '#ccc',
+        }
+    };
+
+    const colors = isDark ? theme.dark : theme.light;
+
     return (
-        <div className="mini-game">
-            <h3>Guess the TF2 Quote Speaker</h3>
+        <div className="mini-game" style={{ color: colors.text }}>
+            <h3>Guess the TF2 Class That Said This!</h3>
             {!isGameOver ? (
                 <>
                     <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'flex-start'}}>
@@ -147,11 +185,12 @@ function GuessQuote({ setTotalScore, onComplete }) {
                                 display: 'flex',
                                 flexWrap: 'wrap',
                                 width: '40%',
-                                border: '1px dashed gray',
+                                border: `1px dashed ${colors.dashedBorder}`,
                                 minHeight: '300px',
                                 padding: '10px',
                                 alignContent: 'flex-start',
-                                boxSizing: 'border-box'
+                                boxSizing: 'border-box',
+                                backgroundColor: colors.background
                             }}
                             onDragOver={e => e.preventDefault()}
                             onDrop={handleDropToPool}
@@ -163,8 +202,8 @@ function GuessQuote({ setTotalScore, onComplete }) {
                                         width: '80px',
                                         height: '80px',
                                         margin: '5px',
-                                        background: '#f9f9f9',
-                                        border: '1px solid gray',
+                                        background: colors.background,
+                                        border: `1px solid ${colors.dashedBorder}`,
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
@@ -176,9 +215,10 @@ function GuessQuote({ setTotalScore, onComplete }) {
                                     <button
                                         onClick={() => playDisguised(quote)}
                                         onMouseDown={e => e.stopPropagation()}
-                                        style={{ pointerEvents: 'auto' }}
+                                        style={{ pointerEvents: 'auto', border: 'none', background: 'transparent', cursor: 'pointer', color: colors.text }}
+                                        aria-label="Play audio"
                                     >
-                                        Play
+                                        <SpeakerIcon />
                                     </button>
                                 </div>
                             ))}
@@ -194,17 +234,17 @@ function GuessQuote({ setTotalScore, onComplete }) {
                         >
                             {speakers.map(slot => (
                                 <div key={slot} style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                                    <span style={{marginBottom: '5px'}}>{slot}</span>
+                                    <span style={{marginBottom: '5px', color: colors.text}}>{slot}</span>
                                     <div
                                         className="drop-square"
                                         style={{
                                             width: '80px',
                                             height: '80px',
-                                            border: '1px solid black',
+                                            border: `1px solid ${colors.border}`,
                                             display: 'flex',
                                             alignItems: 'center',
                                             justifyContent: 'center',
-                                            backgroundColor: '#f9f9f9'
+                                            backgroundColor: colors.background
                                         }}
                                         onDragOver={e => e.preventDefault()}
                                         onDrop={e => handleDrop(e, slot)}
@@ -225,9 +265,10 @@ function GuessQuote({ setTotalScore, onComplete }) {
                                                 <button
                                                     onClick={() => playDisguised(assignments[slot])}
                                                     onMouseDown={e => e.stopPropagation()}
-                                                    style={{ pointerEvents: 'auto' }}
+                                                    style={{ pointerEvents: 'auto', border: 'none', background: 'transparent', cursor: 'pointer', color: colors.text }}
+                                                    aria-label="Play audio"
                                                 >
-                                                    Play
+                                                    <SpeakerIcon />
                                                 </button>
                                             </div>
                                         )}
@@ -236,12 +277,12 @@ function GuessQuote({ setTotalScore, onComplete }) {
                             ))}
                         </div>
                     </div>
-                    <button onClick={handleFinish} style={{marginTop: '20px'}}>Finish</button>
+                    <button onClick={handleFinish} style={{marginTop: '20px', color: colors.text, backgroundColor: colors.buttonBg, border: `1px solid ${colors.buttonBorder}`}}>Finish</button>
                 </>
             ) : (
-                <div>
+                <div style={{ color: colors.text }}>
                     <p>Game Over! Score: {score}/9 (+{score * 4} points)</p>
-                    <button onClick={onComplete}>Continue</button>
+                    <button onClick={onComplete} style={{ color: colors.text, backgroundColor: colors.buttonBg, border: `1px solid ${colors.buttonBorder}` }}>Continue</button>
                 </div>
             )}
         </div>

@@ -52,10 +52,10 @@ function App() {
 
 
     useEffect(() => {
-        if (phase !== "first" && phase !== "second") return;
+        if (phase !== "first" && phase !== "second" && phase !== "quote") return;
 
         const showRandomAd = () => {
-            const prob = Math.min(0.2 + 0.05 * questionsAnsweredRef.current, 1.0);
+            const prob = Math.min(0.1 + 0.05 * questionsAnsweredRef.current, 1.0);
             if (Math.random() < prob) {
                 const randomIndex = Math.floor(Math.random() * popupAds.length);
                 setPopupAd(popupAds[randomIndex]);
