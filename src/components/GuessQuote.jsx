@@ -2,12 +2,12 @@ import { useState, useEffect, useRef } from 'react';
 
 const speakers = ['Scout', 'Soldier', 'Pyro', 'Demoman', 'Heavy', 'Engineer', 'Medic', 'Sniper', 'Spy'];
 
-const audioModules = import.meta.glob('./quotes/**/*.wav', { eager: true, query: '?url', import: 'default' });
+const audioModules = import.meta.glob('../../public/quotes/**/*.wav', { eager: true, query: '?url', import: 'default' });
 
 const speakerAudios = {};
 
 for (const path in audioModules) {
-    const match = path.match(/\.\/quotes\/([^/]+)\/[^/]+\.wav$/);
+    const match = path.match(/.*\/quotes\/([^/]+)\/[^/]+\.wav$/);
     if (match) {
         const folder = match[1];
         const speaker = folder.charAt(0).toUpperCase() + folder.slice(1);
