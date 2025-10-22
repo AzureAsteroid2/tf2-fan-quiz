@@ -102,10 +102,11 @@ function ClassGuess({ setTotalScore, onComplete }) {
                                 flexWrap: 'wrap',
                                 width: '40%',
                                 border: '1px dashed gray',
-                                minHeight: '300px',
+                                height: '365px',
                                 padding: '10px',
                                 alignContent: 'flex-start',
-                                boxSizing: 'border-box'
+                                boxSizing: 'border-box',
+                                overflow: 'auto'
                             }}
                             onDragOver={e => e.preventDefault()}
                             onDrop={handleDropToPool}
@@ -212,36 +213,37 @@ function ClassGuess({ setTotalScore, onComplete }) {
                             ))}
                         </div>
                     </div>
-                    <button 
-                        onClick={handleFinish} 
-                        style={{
-                            marginTop: '20px',
-                            padding: '10px 20px',
-                            borderRadius: '999px',
-                            fontSize: '1.05rem',
-                            fontWeight: '600',
-                            border: '1px solid transparent',
-                            cursor: 'pointer',
-                            transition: 'transform 0.25s ease, box-shadow 0.25s ease',
-                            background: isDark ? 'linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(76, 29, 149, 0.6))' : 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(243,244,255,0.85))',
-                            color: isDark ? 'rgba(255, 255, 255, 0.87)' : '#213547',
-                            borderColor: isDark ? 'rgba(148, 163, 184, 0.25)' : 'rgba(99, 102, 241, 0.15)',
-                            boxShadow: isDark ? '0 14px 32px rgba(15, 23, 42, 0.6)' : '0 12px 30px rgba(99, 102, 241, 0.12)'
-                        }}
-                        onMouseEnter={(e) => {
-                            e.target.style.transform = 'translateY(-2px)';
-                            e.target.style.boxShadow = isDark ? '0 18px 40px rgba(8, 47, 73, 0.6)' : '0 18px 40px rgba(99, 102, 241, 0.2)';
-                        }}
-                        onMouseLeave={(e) => {
-                            e.target.style.transform = 'translateY(0)';
-                            e.target.style.boxShadow = isDark ? '0 14px 32px rgba(15, 23, 42, 0.6)' : '0 12px 30px rgba(99, 102, 241, 0.12)';
-                        }}
-                    >
-                        Finish
-                    </button>
+                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                        <button 
+                            onClick={handleFinish} 
+                            style={{
+                                padding: '10px 20px',
+                                borderRadius: '999px',
+                                fontSize: '1.05rem',
+                                fontWeight: '600',
+                                border: '1px solid transparent',
+                                cursor: 'pointer',
+                                transition: 'transform 0.25s ease, box-shadow 0.25s ease',
+                                background: isDark ? 'linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(76, 29, 149, 0.6))' : 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(243,244,255,0.85))',
+                                color: isDark ? 'rgba(255, 255, 255, 0.87)' : '#213547',
+                                borderColor: isDark ? 'rgba(148, 163, 184, 0.25)' : 'rgba(99, 102, 241, 0.15)',
+                                boxShadow: isDark ? '0 14px 32px rgba(15, 23, 42, 0.6)' : '0 12px 30px rgba(99, 102, 241, 0.12)'
+                            }}
+                            onMouseEnter={(e) => {
+                                e.target.style.transform = 'translateY(-2px)';
+                                e.target.style.boxShadow = isDark ? '0 18px 40px rgba(8, 47, 73, 0.6)' : '0 18px 40px rgba(99, 102, 241, 0.2)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.target.style.transform = 'translateY(0)';
+                                e.target.style.boxShadow = isDark ? '0 14px 32px rgba(15, 23, 42, 0.6)' : '0 12px 30px rgba(99, 102, 241, 0.12)';
+                            }}
+                        >
+                            Finish
+                        </button>
+                    </div>
                 </>
             ) : (
-                <div>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
                     <p>Game Over! Score: {score}/9 (+{score * 4} points)</p>
                     <button 
                         onClick={onComplete}

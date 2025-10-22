@@ -474,13 +474,6 @@ body.dark-mode .timer-red {
   text-align: center;
 }
 
-.mini-game {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
-
 .mini-game h3 {
   text-align: center;
   margin: 0;
@@ -488,6 +481,12 @@ body.dark-mode .timer-red {
 
 .mini-game p {
   text-align: center;
+}
+
+.mini-game .button-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .grade-container {
