@@ -17,6 +17,17 @@ function ClassGuess({ setTotalScore, onComplete }) {
     const [assignments, setAssignments] = useState({});
     const [isGameOver, setIsGameOver] = useState(false);
     const [score, setScore] = useState(0);
+    const [isDark, setIsDark] = useState(false);
+
+    useEffect(() => {
+        const checkDarkMode = () => {
+            setIsDark(document.body.classList.contains('dark-mode'));
+        };
+        checkDarkMode();
+        const observer = new MutationObserver(checkDarkMode);
+        observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+        return () => observer.disconnect();
+    }, []);
 
     useEffect(() => {
         const shuffled = [...classes].sort(() => Math.random() - 0.5);
@@ -107,10 +118,10 @@ function ClassGuess({ setTotalScore, onComplete }) {
                                         height: '80px',
                                         margin: '5px',
                                         cursor: 'grab',
-                                        background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(243,244,255,0.85))',
-                                        border: '1px solid rgba(99, 102, 241, 0.15)',
+                                        background: isDark ? 'linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(76, 29, 149, 0.6))' : 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(243,244,255,0.85))',
+                                        border: isDark ? '1px solid rgba(148, 163, 184, 0.25)' : '1px solid rgba(99, 102, 241, 0.15)',
                                         borderRadius: '12px',
-                                        boxShadow: '0 12px 30px rgba(99, 102, 241, 0.12)',
+                                        boxShadow: isDark ? '0 14px 32px rgba(15, 23, 42, 0.6)' : '0 12px 30px rgba(99, 102, 241, 0.12)',
                                         padding: '8px',
                                         display: 'flex',
                                         alignItems: 'center',
@@ -121,11 +132,11 @@ function ClassGuess({ setTotalScore, onComplete }) {
                                     onDragStart={ev => ev.dataTransfer.setData('application/json', JSON.stringify(cls))}
                                     onMouseEnter={(e) => {
                                         e.currentTarget.style.transform = 'translateY(-2px)';
-                                        e.currentTarget.style.boxShadow = '0 18px 40px rgba(99, 102, 241, 0.2)';
+                                        e.currentTarget.style.boxShadow = isDark ? '0 18px 40px rgba(8, 47, 73, 0.6)' : '0 18px 40px rgba(99, 102, 241, 0.2)';
                                     }}
                                     onMouseLeave={(e) => {
                                         e.currentTarget.style.transform = 'translateY(0)';
-                                        e.currentTarget.style.boxShadow = '0 12px 30px rgba(99, 102, 241, 0.12)';
+                                        e.currentTarget.style.boxShadow = isDark ? '0 14px 32px rgba(15, 23, 42, 0.6)' : '0 12px 30px rgba(99, 102, 241, 0.12)';
                                     }}
                                 >
                                     <img
@@ -158,12 +169,12 @@ function ClassGuess({ setTotalScore, onComplete }) {
                                         style={{
                                             width: '80px',
                                             height: '80px',
-                                            border: '2px dashed rgba(99, 102, 241, 0.3)',
+                                            border: isDark ? '2px dashed rgba(148, 163, 184, 0.3)' : '2px dashed rgba(99, 102, 241, 0.3)',
                                             borderRadius: '12px',
                                             display: 'flex',
                                             alignItems: 'center',
                                             justifyContent: 'center',
-                                            backgroundColor: 'rgba(239, 246, 255, 0.3)'
+                                            backgroundColor: isDark ? 'rgba(30, 41, 59, 0.3)' : 'rgba(239, 246, 255, 0.3)'
                                         }}
                                         onDragOver={e => e.preventDefault()}
                                         onDrop={e => handleDrop(e, slot.name)}
@@ -174,7 +185,7 @@ function ClassGuess({ setTotalScore, onComplete }) {
                                                     width: '100%',
                                                     height: '100%',
                                                     cursor: 'grab',
-                                                    background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(243,244,255,0.85))',
+                                                    background: isDark ? 'linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(76, 29, 149, 0.6))' : 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(243,244,255,0.85))',
                                                     borderRadius: '8px',
                                                     padding: '4px',
                                                     display: 'flex',
@@ -212,18 +223,18 @@ function ClassGuess({ setTotalScore, onComplete }) {
                             border: '1px solid transparent',
                             cursor: 'pointer',
                             transition: 'transform 0.25s ease, box-shadow 0.25s ease',
-                            background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(243,244,255,0.85))',
-                            color: '#213547',
-                            borderColor: 'rgba(99, 102, 241, 0.15)',
-                            boxShadow: '0 12px 30px rgba(99, 102, 241, 0.12)'
+                            background: isDark ? 'linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(76, 29, 149, 0.6))' : 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(243,244,255,0.85))',
+                            color: isDark ? 'rgba(255, 255, 255, 0.87)' : '#213547',
+                            borderColor: isDark ? 'rgba(148, 163, 184, 0.25)' : 'rgba(99, 102, 241, 0.15)',
+                            boxShadow: isDark ? '0 14px 32px rgba(15, 23, 42, 0.6)' : '0 12px 30px rgba(99, 102, 241, 0.12)'
                         }}
                         onMouseEnter={(e) => {
                             e.target.style.transform = 'translateY(-2px)';
-                            e.target.style.boxShadow = '0 18px 40px rgba(99, 102, 241, 0.2)';
+                            e.target.style.boxShadow = isDark ? '0 18px 40px rgba(8, 47, 73, 0.6)' : '0 18px 40px rgba(99, 102, 241, 0.2)';
                         }}
                         onMouseLeave={(e) => {
                             e.target.style.transform = 'translateY(0)';
-                            e.target.style.boxShadow = '0 12px 30px rgba(99, 102, 241, 0.12)';
+                            e.target.style.boxShadow = isDark ? '0 14px 32px rgba(15, 23, 42, 0.6)' : '0 12px 30px rgba(99, 102, 241, 0.12)';
                         }}
                     >
                         Finish
@@ -242,18 +253,18 @@ function ClassGuess({ setTotalScore, onComplete }) {
                             border: '1px solid transparent',
                             cursor: 'pointer',
                             transition: 'transform 0.25s ease, box-shadow 0.25s ease',
-                            background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(243,244,255,0.85))',
-                            color: '#213547',
-                            borderColor: 'rgba(99, 102, 241, 0.15)',
-                            boxShadow: '0 12px 30px rgba(99, 102, 241, 0.12)'
+                            background: isDark ? 'linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(76, 29, 149, 0.6))' : 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(243,244,255,0.85))',
+                            color: isDark ? 'rgba(255, 255, 255, 0.87)' : '#213547',
+                            borderColor: isDark ? 'rgba(148, 163, 184, 0.25)' : 'rgba(99, 102, 241, 0.15)',
+                            boxShadow: isDark ? '0 14px 32px rgba(15, 23, 42, 0.6)' : '0 12px 30px rgba(99, 102, 241, 0.12)'
                         }}
                         onMouseEnter={(e) => {
                             e.target.style.transform = 'translateY(-2px)';
-                            e.target.style.boxShadow = '0 18px 40px rgba(99, 102, 241, 0.2)';
+                            e.target.style.boxShadow = isDark ? '0 18px 40px rgba(8, 47, 73, 0.6)' : '0 18px 40px rgba(99, 102, 241, 0.2)';
                         }}
                         onMouseLeave={(e) => {
                             e.target.style.transform = 'translateY(0)';
-                            e.target.style.boxShadow = '0 12px 30px rgba(99, 102, 241, 0.12)';
+                            e.target.style.boxShadow = isDark ? '0 14px 32px rgba(15, 23, 42, 0.6)' : '0 12px 30px rgba(99, 102, 241, 0.12)';
                         }}
                     >
                         Continue
