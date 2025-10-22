@@ -246,7 +246,7 @@ function App() {
                                             {percentage < 0 && (
                                                 <div className="negative-overlay">
                                                     <p>You should fill one of these out</p>
-                                                    <img src="" alt="Negative Score" className="scary" />
+                                                    <img src="../public/Images/job_application.png" alt="Negative Score" className="scary" />
                                                 </div>
                                             )}
                                         </div>
