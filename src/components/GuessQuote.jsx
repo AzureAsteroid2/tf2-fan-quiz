@@ -202,20 +202,45 @@ function GuessQuote({ setTotalScore, onComplete }) {
                                         width: '80px',
                                         height: '80px',
                                         margin: '5px',
-                                        background: colors.background,
-                                        border: `1px solid ${colors.dashedBorder}`,
+                                        background: isDark ? 'linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(76, 29, 149, 0.6))' : 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(243,244,255,0.85))',
+                                        border: isDark ? '1px solid rgba(148, 163, 184, 0.25)' : '1px solid rgba(99, 102, 241, 0.15)',
+                                        borderRadius: '12px',
+                                        boxShadow: isDark ? '0 14px 32px rgba(15, 23, 42, 0.6)' : '0 12px 30px rgba(99, 102, 241, 0.12)',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
-                                        cursor: 'grab'
+                                        cursor: 'grab',
+                                        transition: 'transform 0.25s ease, box-shadow 0.25s ease'
                                     }}
                                     draggable
                                     onDragStart={ev => ev.dataTransfer.setData('application/json', JSON.stringify(quote))}
+                                    onClick={(e) => e.stopPropagation()}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.transform = 'translateY(-2px)';
+                                        e.currentTarget.style.boxShadow = isDark ? '0 18px 40px rgba(8, 47, 73, 0.6)' : '0 18px 40px rgba(99, 102, 241, 0.2)';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.transform = 'translateY(0)';
+                                        e.currentTarget.style.boxShadow = isDark ? '0 14px 32px rgba(15, 23, 42, 0.6)' : '0 12px 30px rgba(99, 102, 241, 0.12)';
+                                    }}
                                 >
                                     <button
-                                        onClick={() => playDisguised(quote)}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            playDisguised(quote);
+                                        }}
                                         onMouseDown={e => e.stopPropagation()}
-                                        style={{ pointerEvents: 'auto', border: 'none', background: 'transparent', cursor: 'pointer', color: colors.text }}
+                                        style={{ 
+                                            pointerEvents: 'auto', 
+                                            border: 'none', 
+                                            background: 'transparent', 
+                                            cursor: 'pointer', 
+                                            color: isDark ? '#22d3ee' : '#6366f1',
+                                            padding: '4px',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
+                                        }}
                                         aria-label="Play audio"
                                     >
                                         <SpeakerIcon />
@@ -257,15 +282,31 @@ function GuessQuote({ setTotalScore, onComplete }) {
                                                     display: 'flex',
                                                     alignItems: 'center',
                                                     justifyContent: 'center',
-                                                    cursor: 'grab'
+                                                    cursor: 'grab',
+                                                    background: isDark ? 'linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(76, 29, 149, 0.6))' : 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(243,244,255,0.85))',
+                                                    borderRadius: '8px'
                                                 }}
                                                 draggable
                                                 onDragStart={ev => ev.dataTransfer.setData('application/json', JSON.stringify(assignments[slot]))}
+                                                onClick={(e) => e.stopPropagation()}
                                             >
                                                 <button
-                                                    onClick={() => playDisguised(assignments[slot])}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        playDisguised(assignments[slot]);
+                                                    }}
                                                     onMouseDown={e => e.stopPropagation()}
-                                                    style={{ pointerEvents: 'auto', border: 'none', background: 'transparent', cursor: 'pointer', color: colors.text }}
+                                                    style={{ 
+                                                        pointerEvents: 'auto', 
+                                                        border: 'none', 
+                                                        background: 'transparent', 
+                                                        cursor: 'pointer', 
+                                                        color: isDark ? '#22d3ee' : '#6366f1',
+                                                        padding: '4px',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center'
+                                                    }}
                                                     aria-label="Play audio"
                                                 >
                                                     <SpeakerIcon />
@@ -277,12 +318,63 @@ function GuessQuote({ setTotalScore, onComplete }) {
                             ))}
                         </div>
                     </div>
-                    <button onClick={handleFinish} style={{marginTop: '20px', color: colors.text, backgroundColor: colors.buttonBg, border: `1px solid ${colors.buttonBorder}`}}>Finish</button>
+                    <button 
+                        onClick={handleFinish} 
+                        style={{
+                            marginTop: '20px',
+                            padding: '10px 20px',
+                            borderRadius: '999px',
+                            fontSize: '1.05rem',
+                            fontWeight: '600',
+                            border: '1px solid transparent',
+                            cursor: 'pointer',
+                            transition: 'transform 0.25s ease, box-shadow 0.25s ease',
+                            background: isDark ? 'linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(76, 29, 149, 0.6))' : 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(243,244,255,0.85))',
+                            color: isDark ? 'rgba(255, 255, 255, 0.87)' : '#213547',
+                            borderColor: isDark ? 'rgba(148, 163, 184, 0.25)' : 'rgba(99, 102, 241, 0.15)',
+                            boxShadow: isDark ? '0 14px 32px rgba(15, 23, 42, 0.6)' : '0 12px 30px rgba(99, 102, 241, 0.12)'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.target.style.transform = 'translateY(-2px)';
+                            e.target.style.boxShadow = isDark ? '0 18px 40px rgba(8, 47, 73, 0.6)' : '0 18px 40px rgba(99, 102, 241, 0.2)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.target.style.transform = 'translateY(0)';
+                            e.target.style.boxShadow = isDark ? '0 14px 32px rgba(15, 23, 42, 0.6)' : '0 12px 30px rgba(99, 102, 241, 0.12)';
+                        }}
+                    >
+                        Finish
+                    </button>
                 </>
             ) : (
                 <div style={{ color: colors.text }}>
                     <p>Game Over! Score: {score}/9 (+{score * 4} points)</p>
-                    <button onClick={onComplete} style={{ color: colors.text, backgroundColor: colors.buttonBg, border: `1px solid ${colors.buttonBorder}` }}>Continue</button>
+                    <button 
+                        onClick={onComplete} 
+                        style={{
+                            padding: '10px 20px',
+                            borderRadius: '999px',
+                            fontSize: '1.05rem',
+                            fontWeight: '600',
+                            border: '1px solid transparent',
+                            cursor: 'pointer',
+                            transition: 'transform 0.25s ease, box-shadow 0.25s ease',
+                            background: isDark ? 'linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(76, 29, 149, 0.6))' : 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(243,244,255,0.85))',
+                            color: isDark ? 'rgba(255, 255, 255, 0.87)' : '#213547',
+                            borderColor: isDark ? 'rgba(148, 163, 184, 0.25)' : 'rgba(99, 102, 241, 0.15)',
+                            boxShadow: isDark ? '0 14px 32px rgba(15, 23, 42, 0.6)' : '0 12px 30px rgba(99, 102, 241, 0.12)'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.target.style.transform = 'translateY(-2px)';
+                            e.target.style.boxShadow = isDark ? '0 18px 40px rgba(8, 47, 73, 0.6)' : '0 18px 40px rgba(99, 102, 241, 0.2)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.target.style.transform = 'translateY(0)';
+                            e.target.style.boxShadow = isDark ? '0 14px 32px rgba(15, 23, 42, 0.6)' : '0 12px 30px rgba(99, 102, 241, 0.12)';
+                        }}
+                    >
+                        Continue
+                    </button>
                 </div>
             )}
         </div>

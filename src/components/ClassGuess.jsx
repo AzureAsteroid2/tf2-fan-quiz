@@ -100,20 +100,45 @@ function ClassGuess({ setTotalScore, onComplete }) {
                             onDrop={handleDropToPool}
                         >
                             {pool.map(cls => (
-                                <img
+                                <div
                                     key={cls.name}
-                                    src={cls.image}
-                                    alt="Silhouette"
                                     style={{
                                         width: '80px',
                                         height: '80px',
                                         margin: '5px',
                                         cursor: 'grab',
-                                        objectFit: 'contain'
+                                        background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(243,244,255,0.85))',
+                                        border: '1px solid rgba(99, 102, 241, 0.15)',
+                                        borderRadius: '12px',
+                                        boxShadow: '0 12px 30px rgba(99, 102, 241, 0.12)',
+                                        padding: '8px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        transition: 'transform 0.25s ease, box-shadow 0.25s ease'
                                     }}
                                     draggable
                                     onDragStart={ev => ev.dataTransfer.setData('application/json', JSON.stringify(cls))}
-                                />
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.transform = 'translateY(-2px)';
+                                        e.currentTarget.style.boxShadow = '0 18px 40px rgba(99, 102, 241, 0.2)';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.transform = 'translateY(0)';
+                                        e.currentTarget.style.boxShadow = '0 12px 30px rgba(99, 102, 241, 0.12)';
+                                    }}
+                                >
+                                    <img
+                                        src={cls.image}
+                                        alt="Silhouette"
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            objectFit: 'contain',
+                                            pointerEvents: 'none'
+                                        }}
+                                    />
+                                </div>
                             ))}
                         </div>
                         <div
@@ -133,40 +158,106 @@ function ClassGuess({ setTotalScore, onComplete }) {
                                         style={{
                                             width: '80px',
                                             height: '80px',
-                                            border: '1px solid black',
+                                            border: '2px dashed rgba(99, 102, 241, 0.3)',
+                                            borderRadius: '12px',
                                             display: 'flex',
                                             alignItems: 'center',
                                             justifyContent: 'center',
-                                            backgroundColor: '#f9f9f9'
+                                            backgroundColor: 'rgba(239, 246, 255, 0.3)'
                                         }}
                                         onDragOver={e => e.preventDefault()}
                                         onDrop={e => handleDrop(e, slot.name)}
                                     >
                                         {assignments[slot.name] && (
-                                            <img
-                                                src={assignments[slot.name].image}
-                                                alt="Silhouette"
+                                            <div
                                                 style={{
                                                     width: '100%',
                                                     height: '100%',
-                                                    objectFit: 'contain',
-                                                    cursor: 'grab'
+                                                    cursor: 'grab',
+                                                    background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(243,244,255,0.85))',
+                                                    borderRadius: '8px',
+                                                    padding: '4px',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center'
                                                 }}
                                                 draggable
                                                 onDragStart={ev => ev.dataTransfer.setData('application/json', JSON.stringify(assignments[slot.name]))}
-                                            />
+                                            >
+                                                <img
+                                                    src={assignments[slot.name].image}
+                                                    alt="Silhouette"
+                                                    style={{
+                                                        width: '100%',
+                                                        height: '100%',
+                                                        objectFit: 'contain',
+                                                        pointerEvents: 'none'
+                                                    }}
+                                                />
+                                            </div>
                                         )}
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </div>
-                    <button onClick={handleFinish} style={{marginTop: '20px'}}>Finish</button>
+                    <button 
+                        onClick={handleFinish} 
+                        style={{
+                            marginTop: '20px',
+                            padding: '10px 20px',
+                            borderRadius: '999px',
+                            fontSize: '1.05rem',
+                            fontWeight: '600',
+                            border: '1px solid transparent',
+                            cursor: 'pointer',
+                            transition: 'transform 0.25s ease, box-shadow 0.25s ease',
+                            background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(243,244,255,0.85))',
+                            color: '#213547',
+                            borderColor: 'rgba(99, 102, 241, 0.15)',
+                            boxShadow: '0 12px 30px rgba(99, 102, 241, 0.12)'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.target.style.transform = 'translateY(-2px)';
+                            e.target.style.boxShadow = '0 18px 40px rgba(99, 102, 241, 0.2)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.target.style.transform = 'translateY(0)';
+                            e.target.style.boxShadow = '0 12px 30px rgba(99, 102, 241, 0.12)';
+                        }}
+                    >
+                        Finish
+                    </button>
                 </>
             ) : (
                 <div>
                     <p>Game Over! Score: {score}/9 (+{score * 4} points)</p>
-                    <button onClick={onComplete}>Continue</button>
+                    <button 
+                        onClick={onComplete}
+                        style={{
+                            padding: '10px 20px',
+                            borderRadius: '999px',
+                            fontSize: '1.05rem',
+                            fontWeight: '600',
+                            border: '1px solid transparent',
+                            cursor: 'pointer',
+                            transition: 'transform 0.25s ease, box-shadow 0.25s ease',
+                            background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(243,244,255,0.85))',
+                            color: '#213547',
+                            borderColor: 'rgba(99, 102, 241, 0.15)',
+                            boxShadow: '0 12px 30px rgba(99, 102, 241, 0.12)'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.target.style.transform = 'translateY(-2px)';
+                            e.target.style.boxShadow = '0 18px 40px rgba(99, 102, 241, 0.2)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.target.style.transform = 'translateY(0)';
+                            e.target.style.boxShadow = '0 12px 30px rgba(99, 102, 241, 0.12)';
+                        }}
+                    >
+                        Continue
+                    </button>
                 </div>
             )}
         </div>
