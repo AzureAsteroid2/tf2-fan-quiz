@@ -145,7 +145,7 @@ body.dark-mode .header-content .theme button {
 
 .card {
   width: min(720px, 100%);
-  height: calc(100vh - 39vh - 40px);
+  height: calc(100vh - 36vh - 40px);
   padding: clamp(16px, 2vw, 28px);
   border-radius: 24px;
   backdrop-filter: blur(18px);
@@ -270,6 +270,7 @@ input:checked + .slider:before {
   font-size: clamp(1.1rem, 1.8vw, 1.6rem);
   max-width: 620px;
   text-align: center;
+  margin-top: -16px;
 }
 
 .question-image {
@@ -412,6 +413,8 @@ body.dark-mode .start-button {
   letter-spacing: 0.05em;
   text-align: center;
   transition: all 0.3s ease;
+  position: relative;
+  top: -24px;
 }
 
 .timer-green {
