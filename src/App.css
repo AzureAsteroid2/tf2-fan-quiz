@@ -271,10 +271,6 @@ input:checked + .slider:before {
   max-width: 620px;
   text-align: center;
   margin-top: -16px;
-  min-height: calc(clamp(1.1rem, 1.8vw, 1.6rem) * 1.2 * 2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .question-image {
@@ -511,6 +507,51 @@ body.dark-mode .timer-red {
 
 .grade-container p {
   font-size: 1.05rem;
+}
+
+/* Mobile Warning */
+.mobile-warning-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  backdrop-filter: blur(8px);
+}
+
+.mobile-warning {
+  background: var(--surface-light);
+  border: 1px solid var(--border-light);
+  border-radius: 24px;
+  padding: 32px;
+  max-width: 500px;
+  margin: 20px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .mobile-warning {
+  background: var(--surface-dark);
+  border-color: var(--border-dark);
+}
+
+.mobile-warning h2 {
+  margin: 0 0 16px 0;
+  font-size: 1.5rem;
+}
+
+.mobile-warning p {
+  margin: 12px 0;
+  line-height: 1.6;
+}
+
+.mobile-warning button {
+  margin-top: 20px;
 }
 
 .negative-overlay {

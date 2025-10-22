@@ -14,6 +14,19 @@ import GuessQuote from "./components/GuessQuote.jsx"; // New import for the quot
 import {useCallback, useEffect, useRef, useState} from "react";
 import ClassGuess from "./components/ClassGuess.jsx";
 
+function MobileWarning({ onDismiss }) {
+    return (
+        <div className="mobile-warning-overlay">
+            <div className="mobile-warning">
+                <h2>⚠️ Mobile Warning</h2>
+                <p>This quiz is optimized for desktop browsers. Some features may not work properly on mobile devices.</p>
+                <p>For the best experience, please use a desktop or laptop computer.</p>
+                <button onClick={onDismiss} className="gamble-button">Continue Anyway</button>
+            </div>
+        </div>
+    );
+}
+
 function App() {
     const [phase, setPhase] = useState("first"); // "first", "pong", "second", "silhouette", "quote", "done"
     const timerTime = 10;
@@ -33,9 +46,18 @@ function App() {
     const [totalPossibleScore, setTotalPossibleScore] = useState(0);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [isStarted, setIsStarted] = useState(false);
+    const [showMobileWarning, setShowMobileWarning] = useState(false);
     const PONG_BONUS = 10;
     const CLASS_GUESS_BONUS = 36;
     const QUOTE_BONUS = 36;
+
+    // Check if mobile on mount
+    useEffect(() => {
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+        if (isMobile) {
+            setShowMobileWarning(true);
+        }
+    }, []);
 
     // Calculate total possible score when component mounts
     useEffect(() => {
@@ -180,6 +202,7 @@ function App() {
 
     return (
         <>
+            {showMobileWarning && <MobileWarning onDismiss={() => setShowMobileWarning(false)} />}
             <Header />
 
             <Ad image={adPair.left.image} url={adPair.left.url} position="left" />
