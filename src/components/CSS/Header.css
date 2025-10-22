@@ -25,6 +25,9 @@
 
 .theme{
     font-size: calc(1.0vw + 1.0vh);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .header-content > * {
@@ -37,6 +40,15 @@
 
 .header-content > h2 {
     font-size: calc(1.5vw + 1.5vh);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.header-content > a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 

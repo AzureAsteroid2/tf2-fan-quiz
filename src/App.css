@@ -59,36 +59,41 @@ body {
   transform: translateY(-3px) scale(1.02);
   filter: drop-shadow(0 12px 25px var(--shadow-light));
 }
-
 .dark-mode .logo:hover {
   transform: translateY(-3px) scale(1.02);
   filter: drop-shadow(0 12px 25px var(--shadow-dark));
 }
 
-.theme button {
-  max-width: 220px;
-  border-radius: 999px;
-  padding: 10px 20px;
-  font-size: 0.9rem;
-  font-weight: 600;
+.theme button,
+button.theme,
+.header-content .theme button {
+  min-width: 180px;
+  border-radius: 999px !important;
+  padding: 12px 24px !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
   letter-spacing: 0.02em;
-  border: 1px solid transparent;
+  border: 1px solid transparent !important;
   cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border 0.25s ease, background 0.3s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border 0.25s ease, background 0.3s ease !important;
 }
 
-.light-mode .theme button {
-  background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(243,244,255,0.85));
-  color: var(--text-light);
-  border-color: rgba(99, 102, 241, 0.15);
-  box-shadow: 0 12px 30px rgba(99, 102, 241, 0.12);
+body.light-mode .theme button,
+body.light-mode button.theme,
+body.light-mode .header-content .theme button {
+  background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(243,244,255,0.85)) !important;
+  color: var(--text-light) !important;
+  border-color: rgba(99, 102, 241, 0.15) !important;
+  box-shadow: 0 12px 30px rgba(99, 102, 241, 0.12) !important;
 }
 
-.dark-mode .theme button {
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(76, 29, 149, 0.6));
-  color: var(--text-dark);
-  border-color: rgba(148, 163, 184, 0.25);
-  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.6);
+body.dark-mode .theme button,
+body.dark-mode button.theme,
+body.dark-mode .header-content .theme button {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(76, 29, 149, 0.6)) !important;
+  color: var(--text-dark) !important;
+  border-color: rgba(148, 163, 184, 0.25) !important;
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.6) !important;
 }
 
 .theme button:hover {

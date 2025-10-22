@@ -234,7 +234,7 @@ function App() {
                                 {phase === "done" && (
                                     <div className="Score">
                                         <h2>You have completed the quiz!!!</h2>
-                                        <button onClick={() => setPhase("grade")}>See Grade</button>
+                                        <button className="gamble-button" onClick={() => setPhase("grade")}>See Grade</button>
                                     </div>
                                 )}
 
