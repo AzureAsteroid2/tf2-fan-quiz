@@ -57,9 +57,17 @@ function GuessQuote({ setTotalScore, onComplete }) {
 
             const map = {};
             for (let q of shuffled) {
-                const response = await fetch(q.audio);
-                const arrayBuffer = await response.arrayBuffer();
-                map[q.audio] = await audioCtxRef.current.decodeAudioData(arrayBuffer);
+                try {
+                    const response = await fetch(q.audio);
+                    if (!response.ok) {
+                        console.error(`Failed to fetch audio: ${q.audio} - Status: ${response.status}`);
+                        continue;
+                    }
+                    const arrayBuffer = await response.arrayBuffer();
+                    map[q.audio] = await audioCtxRef.current.decodeAudioData(arrayBuffer);
+                } catch (error) {
+                    console.error(`Error loading audio for ${q.speaker}: ${q.audio}`, error);
+                }
             }
             setBuffers(map);
         };
@@ -71,7 +79,12 @@ function GuessQuote({ setTotalScore, onComplete }) {
     }, []);
 
     const playDisguised = (quote) => {
-        if (!quote || !buffers[quote.audio] || !audioCtxRef.current) return;
+        if (!quote || !buffers[quote.audio] || !audioCtxRef.current) {
+            if (quote && !buffers[quote.audio]) {
+                console.warn(`Audio buffer not available for: ${quote.speaker} - ${quote.audio}`);
+            }
+            return;
+        }
 
         if (sourceRef.current) {
             sourceRef.current.stop();
