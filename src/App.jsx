@@ -16,7 +16,7 @@ import ClassGuess from "./components/ClassGuess.jsx";
 
 function App() {
     const [phase, setPhase] = useState("first"); // "first", "pong", "second", "silhouette", "quote", "done"
-    const timerTime = 5;
+    const timerTime = 10;
     const [timer, setTimer] = useState(timerTime);
     const timerIdRef = useRef(null);
     const [adPair] = useState(() => {
@@ -52,10 +52,11 @@ function App() {
 
 
     useEffect(() => {
-        if (phase !== "first" && phase !== "second" && phase !== "quote") return;
+        // Only show popup ads during question phases, not during drag-and-drop games
+        if (phase !== "first" && phase !== "second") return;
 
         const showRandomAd = () => {
-            const prob = Math.min(0.1 + 0.05 * questionsAnsweredRef.current, 1.0);
+            const prob = Math.min(0.05 + 0.03 * questionsAnsweredRef.current, 0.7);
             if (Math.random() < prob) {
                 const randomIndex = Math.floor(Math.random() * popupAds.length);
                 setPopupAd(popupAds[randomIndex]);
@@ -72,7 +73,7 @@ function App() {
 
         adPopupTimerRef.current = setInterval(() => {
             showRandomAd();
-        }, Math.floor(Math.random() * 9000) + 1000);
+        }, Math.floor(Math.random() * 12000) + 3000);
 
         return () => {
             if (adPopupTimerRef.current) clearInterval(adPopupTimerRef.current);
@@ -208,7 +209,9 @@ function App() {
 
                             {phase === "second" && (
                                 <div>
-                                    <div className="timer">Time left: {timer}</div>
+                                    <div className={`timer ${timer >= 6 ? 'timer-green' : timer >= 3 ? 'timer-yellow' : 'timer-red'}`}>
+                                        Time left: {timer}
+                                    </div>
                                     <Question
                                         {...questions_two[currentQuestionIndex]}
                                         onNextQuestion={handleNextQuestion}

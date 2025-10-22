@@ -1,15 +1,29 @@
 .boring-footer {
-    position: relative;
-    margin-top: auto;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
-    justify-content: space-between;  /* Spread items to opposite ends */
+    justify-content: space-between;
     align-items: center;
-    width: 60vw;  /* Matches main content width, adjust as needed */
+    width: min(880px, 90vw);
     max-width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 10px;
+    padding: clamp(12px, 2vw, 20px);
     height: 10vh;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: var(--surface-light);
+    border: 1px solid var(--border-light);
+    border-radius: 24px 24px 0 0;
+    box-shadow: 0 -20px 40px rgba(15, 23, 42, 0.08);
+    transition: box-shadow 0.3s ease;
+    z-index: 900;
+}
+
+.dark-mode .boring-footer {
+    background: var(--surface-dark);
+    border-color: var(--border-dark);
+    box-shadow: 0 -20px 40px rgba(6, 78, 128, 0.25);
 }
 
 .boring-footer > * {
@@ -23,49 +37,70 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 12px;
 }
 
 .button-group {
     display: flex;
-    gap: 10px; /* space between buttons */
-    margin-bottom: 0.5em;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .volume-control {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
+    font-size: 0.9rem;
 }
 
 
-/* Style the play/pause button */
-.play-pause-button {
-    margin-bottom: 5px;
-    padding: 5px 15px;
-    border-radius: 4px;
+.button-group button {
+    padding: 8px 16px;
+    border-radius: 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1px solid transparent;
     cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Theme specific styles for the button */
-.light-mode .play-pause-button {
-    background-color: var(--background-light);
+body.light-mode .button-group button {
+    background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(239,246,255,0.8));
     color: var(--text-light);
-    border: 1px solid var(--text-light);
+    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.12);
+    border-color: rgba(99, 102, 241, 0.15);
 }
 
-.dark-mode .play-pause-button {
-    background-color: var(--background-dark);
+body.dark-mode .button-group button {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(49, 46, 129, 0.6));
     color: var(--text-dark);
-    border: 1px solid var(--text-dark);
+    box-shadow: 0 6px 16px rgba(6, 78, 128, 0.25);
+    border-color: rgba(14, 165, 233, 0.2);
+}
+
+.button-group button:hover {
+    transform: translateY(-1px);
+}
+
+body.light-mode .button-group button:hover {
+    box-shadow: 0 10px 24px rgba(99, 102, 241, 0.18);
+}
+
+body.dark-mode .button-group button:hover {
+    box-shadow: 0 10px 24px rgba(8, 47, 73, 0.4);
 }
 
 .volume-input {
-    width: 50px;
-    padding: 5px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    width: 60px;
+    padding: 6px 8px;
+    border: 1px solid transparent;
+    border-radius: 12px;
     text-align: center;
-    -moz-appearance: textfield; /* Removes arrows in Firefox */
+    font-size: 0.85rem;
+    font-weight: 600;
+    -moz-appearance: textfield;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 /* Remove arrows from number input */
@@ -79,17 +114,31 @@
     font-size: 0.9em;
 }
 
-/* Theme-specific styles */
-.light-mode .volume-input {
-    background-color: var(--background-light);
+body.light-mode .volume-input {
+    background: rgba(255, 255, 255, 0.9);
     color: var(--text-light);
-    border-color: var(--text-light);
+    border-color: rgba(99, 102, 241, 0.15);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.08);
 }
 
-.dark-mode .volume-input {
-    background-color: var(--background-dark);
+body.dark-mode .volume-input {
+    background: rgba(30, 41, 59, 0.8);
     color: var(--text-dark);
-    border-color: var(--text-dark);
+    border-color: rgba(14, 165, 233, 0.2);
+    box-shadow: 0 4px 12px rgba(6, 78, 128, 0.2);
+}
+
+.volume-input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+body.light-mode .volume-input:focus {
+    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.15);
+}
+
+body.dark-mode .volume-input:focus {
+    box-shadow: 0 6px 16px rgba(14, 165, 233, 0.3);
 }
 /* Theme-specific styles */
 .light-mode .volume-control input[type="range"] {
@@ -116,16 +165,28 @@
     background: var(--text-dark);
 }
 
-.github{
-
+.github {
+    transition: transform 0.3s ease, filter 0.3s ease;
+    border-radius: 12px;
+    padding: 8px;
 }
-.light-mode .github{
+
+.light-mode .github {
     filter: invert(0);
 }
 
-.dark-mode .github{
+.dark-mode .github {
     filter: invert(1);
 }
-.dark-mode .github:hover{
-    filter: invert(1) drop-shadow(0 0 2em var(--react-shadow-dark));
+
+.github:hover {
+    transform: translateY(-2px) scale(1.05);
+}
+
+.light-mode .github:hover {
+    filter: invert(0) drop-shadow(0 8px 16px rgba(99, 102, 241, 0.3));
+}
+
+.dark-mode .github:hover {
+    filter: invert(1) drop-shadow(0 8px 16px rgba(34, 211, 238, 0.4));
 }

@@ -3,14 +3,17 @@
     top: 0;
     left: 0;
     right: 0;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(15, 23, 42, 0.12);
     z-index: 1000;
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .header-content {
-    max-height: 10vh;
-    padding: 1rem 2rem;
+    height: 10vh;
+    padding: clamp(12px, 2vw, 20px) clamp(16px, 4vw, 48px);
     word-wrap: break-word;
     overflow-wrap: break-word;
     max-width: 100%;
@@ -38,29 +41,27 @@
 
 
 .light-mode .header-content {
-    background-color: var(--background-light);
+    background: rgba(255, 255, 255, 0.85);
+    border-bottom-color: rgba(99, 102, 241, 0.15);
+    transition: background 0.6s ease, border-bottom-color 0.4s ease;
 }
 
 .dark-mode .header-content {
-    background-color: var(--background-dark);
-}
-
-
-
-a {
-    margin: 0;
-    padding: 0;
-    display: inline-block;
-}
-
-.unstyled-link {
-    color: inherit;        /* Inherit color from parent */
-    text-decoration: none; /* Remove underline */
+    background: rgba(11, 18, 32, 0.85);
 }
 
 .unstyled-link:hover,
-.unstyled-link:focus,
+.unstyled-link:focus {
+    color: var(--accent);
+}
+
+.dark-mode .unstyled-link:hover,
+.dark-mode .unstyled-link:focus {
+    color: var(--accent-alt);
+    text-shadow: 0 2px 8px rgba(34, 211, 238, 0.4);
+}
+
 .unstyled-link:active {
-    color: inherit;        /* Keep same color on hover/focus/active */
-    text-decoration: none; /* Ensure no underline appears */
+    color: inherit;
+    text-decoration: none;
 }
