@@ -15,8 +15,8 @@ import {useCallback, useEffect, useRef, useState} from "react";
 import ClassGuess from "./components/ClassGuess.jsx";
 import confetti from 'canvas-confetti';
 
-// Debug mode - set to false to hide all debug buttons
-const DEBUG_MODE = false;
+// Debug mode - controlled by environment variable (defaults to false for production)
+const DEBUG_MODE = import.meta.env.VITE_DEBUG_MODE === 'true';
 
 function MobileWarning({ onDismiss }) {
     return (
