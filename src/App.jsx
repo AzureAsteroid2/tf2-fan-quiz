@@ -181,6 +181,8 @@ function App() {
         setPhase("done");
     };
 
+    const [showJobJumpscare, setShowJobJumpscare] = useState(false);
+
     // Play grade sound when grade phase is shown
     useEffect(() => {
         if (phase === "grade") {
@@ -216,6 +218,36 @@ function App() {
                     }
                 };
                 frame();
+            }
+
+            // Trigger failure effect for F rank
+            if (grade === "F") {
+                const duration = 3000; // 3 seconds
+                const end = Date.now() + duration;
+
+                const frame = () => {
+                    confetti({
+                        particleCount: 2,
+                        angle: 90,
+                        spread: 180,
+                        origin: { y: 0 },
+                        colors: ['#1f2937', '#374151', '#4b5563', '#6b7280'],
+                        gravity: 1.5,
+                        scalar: 0.8
+                    });
+
+                    if (Date.now() < end) {
+                        requestAnimationFrame(frame);
+                    }
+                };
+                frame();
+
+                // Show job jumpscare after 3 seconds
+                setTimeout(() => {
+                    setShowJobJumpscare(true);
+                }, 3000);
+            } else {
+                setShowJobJumpscare(false);
             }
         }
     }, [phase]);
@@ -365,6 +397,13 @@ function App() {
                     onClose={handleAdClose}
                     popupStyle={popupStyle}
                 />
+            )}
+
+            {showJobJumpscare && (
+                <div className="job-jumpscare">
+                    <h2 className="job-jumpscare-text">You should fill one of these out</h2>
+                    <img src="./Images/job_application.png" alt="Job Application" className="job-jumpscare-image" />
+                </div>
             )}
 
             <Footer />
