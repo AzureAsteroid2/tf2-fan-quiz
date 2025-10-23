@@ -10,9 +10,10 @@ import Ad from "./components/Ad.jsx";
 import Footer from "./components/Footer.jsx";
 import Pong from "./components/Pong.jsx";
 import AdPopup from "./components/AdPopup.jsx";
-import GuessQuote from "./components/GuessQuote.jsx"; // New import for the quote game
+import GuessQuote from "./components/GuessQuote.jsx";
 import {useCallback, useEffect, useRef, useState} from "react";
 import ClassGuess from "./components/ClassGuess.jsx";
+import confetti from 'canvas-confetti';
 
 function MobileWarning({ onDismiss }) {
     return (
@@ -188,6 +189,34 @@ function App() {
             gradeAudio.play().catch((e) => {
                 console.log("Grade sound play blocked", e);
             });
+
+            // Trigger confetti for S rank
+            if (grade === "S") {
+                const duration = 3000; // 3 seconds
+                const end = Date.now() + duration;
+
+                const frame = () => {
+                    confetti({
+                        particleCount: 3,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0 },
+                        colors: ['#6366f1', '#8b5cf6', '#22c55e', '#eab308']
+                    });
+                    confetti({
+                        particleCount: 3,
+                        angle: 120,
+                        spread: 55,
+                        origin: { x: 1 },
+                        colors: ['#6366f1', '#8b5cf6', '#22c55e', '#eab308']
+                    });
+
+                    if (Date.now() < end) {
+                        requestAnimationFrame(frame);
+                    }
+                };
+                frame();
+            }
         }
     }, [phase]);
 
