@@ -510,11 +510,54 @@ body.dark-mode .timer-red {
   font-weight: 900;
   line-height: 1;
   margin: 0;
-  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+}
+
+/* S Grade - Gold */
+.grade-letter.grade-s {
+  background: linear-gradient(135deg, #ffd700, #ffed4e, #ffa500);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+}
+
+/* A Grade - Red/Crimson */
+.grade-letter.grade-a {
+  background: linear-gradient(135deg, #dc2626, #ef4444, #f87171);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* B Grade - Blue */
+.grade-letter.grade-b {
+  background: linear-gradient(135deg, #2563eb, #3b82f6, #60a5fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* C Grade - Green */
+.grade-letter.grade-c {
+  background: linear-gradient(135deg, #16a34a, #22c55e, #4ade80);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* D Grade - Orange */
+.grade-letter.grade-d {
+  background: linear-gradient(135deg, #ea580c, #f97316, #fb923c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* F Grade - Dark Gray/Black (Failure) */
+.grade-letter.grade-f {
+  background: linear-gradient(135deg, #1f2937, #374151, #4b5563);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .grade-percentage {

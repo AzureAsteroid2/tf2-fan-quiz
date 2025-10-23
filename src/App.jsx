@@ -250,6 +250,14 @@ function App() {
         setIsStarted(true);
     };
 
+    const testGrade = (targetPercentage) => {
+        const maxScore = totalPossibleScore + PONG_BONUS + CLASS_GUESS_BONUS + QUOTE_BONUS;
+        const testScore = Math.round((targetPercentage / 100) * maxScore);
+        setTotalScore(testScore);
+        setPhase("grade");
+        setIsStarted(true);
+    };
+
     const handleAdClose = () => {
         setShowAdPopup(false);
         setPopupAd(null);
@@ -269,6 +277,18 @@ function App() {
                         <>
                             <h1>Are you a Team Fortress 2 Fan?</h1>
                             <button className="start-button" onClick={handleStart}>Start Quiz</button>
+                            
+                            <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
+                                <p style={{ fontSize: '0.9rem', opacity: 0.7 }}>Test Grades:</p>
+                                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                                    <button className="gamble-button" onClick={() => testGrade(100)}>S (100%)</button>
+                                    <button className="gamble-button" onClick={() => testGrade(95)}>A (95%)</button>
+                                    <button className="gamble-button" onClick={() => testGrade(85)}>B (85%)</button>
+                                    <button className="gamble-button" onClick={() => testGrade(75)}>C (75%)</button>
+                                    <button className="gamble-button" onClick={() => testGrade(65)}>D (65%)</button>
+                                    <button className="gamble-button" onClick={() => testGrade(50)}>F (50%)</button>
+                                </div>
+                            </div>
                         </>
                     )}
 
@@ -321,7 +341,7 @@ function App() {
                                     
                                     return (
                                         <div className="grade-container">
-                                            <div className="grade-letter">{grade}</div>
+                                            <div className={`grade-letter grade-${grade.toLowerCase()}`}>{grade}</div>
                                             <p className="grade-percentage">{percentage}%</p>
                                             <p>Quiz Score: {totalScore} / {totalPossibleScore + PONG_BONUS + CLASS_GUESS_BONUS + QUOTE_BONUS}</p>
                                             {isPerfect && <p className="perfect-message">Remember this for a book: 10202017</p>}
