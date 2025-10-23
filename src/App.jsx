@@ -32,10 +32,11 @@ function App() {
     const timerTime = 10;
     const [timer, setTimer] = useState(timerTime);
     const timerIdRef = useRef(null);
-    const [adPair] = useState(() => {
+    const [adPair, setAdPair] = useState(() => {
         const randomIndex = Math.floor(Math.random() * adPairs.length);
         return adPairs[randomIndex];
     });
+    const adRotationTimerRef = useRef(null);
     const [showAdPopup, setShowAdPopup] = useState(false);
     const [popupAd, setPopupAd] = useState(null);
     const [popupStyle, setPopupStyle] = useState({});
@@ -57,6 +58,18 @@ function App() {
         if (isMobile) {
             setShowMobileWarning(true);
         }
+    }, []);
+
+    // Rotate side ads every minute
+    useEffect(() => {
+        adRotationTimerRef.current = setInterval(() => {
+            const randomIndex = Math.floor(Math.random() * adPairs.length);
+            setAdPair(adPairs[randomIndex]);
+        }, 90000); // 90 seconds
+
+        return () => {
+            if (adRotationTimerRef.current) clearInterval(adRotationTimerRef.current);
+        };
     }, []);
 
     // Calculate total possible score when component mounts
