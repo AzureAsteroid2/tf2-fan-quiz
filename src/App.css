@@ -505,8 +505,34 @@ body.dark-mode .timer-red {
   align-items: center;
 }
 
+.grade-letter {
+  font-size: clamp(8rem, 15vw, 12rem);
+  font-weight: 900;
+  line-height: 1;
+  margin: 0;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+}
+
+.grade-percentage {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 700;
+  margin: 0;
+}
+
 .grade-container p {
   font-size: 1.05rem;
+  margin: 8px 0;
+}
+
+.perfect-message {
+  font-weight: 600;
+  color: var(--success);
+  font-size: 1.2rem !important;
+  margin-top: 16px !important;
 }
 
 /* Mobile Warning */

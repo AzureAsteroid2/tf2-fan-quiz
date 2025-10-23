@@ -180,22 +180,35 @@ function App() {
         setPhase("done");
     };
 
+    // Play grade sound when grade phase is shown
+    useEffect(() => {
+        if (phase === "grade") {
+            const { grade } = getGrade();
+            const gradeAudio = new Audio(`./sounds/${grade}.mp3`);
+            gradeAudio.play().catch((e) => {
+                console.log("Grade sound play blocked", e);
+            });
+        }
+    }, [phase]);
+
     const getGrade = () => {
         const percentage = Math.round((totalScore / (totalPossibleScore + PONG_BONUS + CLASS_GUESS_BONUS + QUOTE_BONUS)) * 100);
         let grade = "";
 
         if (percentage < 0) {
             grade = "F";
-        } else if (percentage <= 69) {
+        } else if (percentage < 60) {
+            grade = "F";
+        } else if (percentage < 70) {
             grade = "D";
-        } else if (percentage <= 79) {
+        } else if (percentage < 80) {
             grade = "C";
-        } else if (percentage <= 89) {
+        } else if (percentage < 90) {
             grade = "B";
-        } else if (percentage <= 98) {
+        } else if (percentage < 100) {
             grade = "A";
         } else {
-            grade = "S";
+            grade = "S"; // Perfect score
         }
 
         const isPerfect = percentage === 100;
@@ -276,12 +289,13 @@ function App() {
 
                                 {phase === "grade" && (() => {
                                     const { percentage, grade, isPerfect } = getGrade();
+                                    
                                     return (
                                         <div className="grade-container">
-                                            <h2>Your Grade: {grade}</h2>
+                                            <div className="grade-letter">{grade}</div>
+                                            <p className="grade-percentage">{percentage}%</p>
                                             <p>Quiz Score: {totalScore} / {totalPossibleScore + PONG_BONUS + CLASS_GUESS_BONUS + QUOTE_BONUS}</p>
-                                            <p>Score: {percentage}%</p>
-                                            {isPerfect && <p>Remember this for a book: 10202017</p>}
+                                            {isPerfect && <p className="perfect-message">Remember this for a book: 10202017</p>}
                                             {percentage < 0 && (
                                                 <div className="negative-overlay">
                                                     <p>You should fill one of these out</p>
