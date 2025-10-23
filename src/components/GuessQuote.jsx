@@ -40,35 +40,54 @@ function GuessQuote({ setTotalScore, onComplete }) {
     useEffect(() => {
         audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
 
-        const init = async () => {
-            const selectedQuotes = speakers.map(s => {
-                const audios = speakerAudios[s] || [];
-                if (audios.length === 0) return null;
-                const randomAudio = audios[Math.floor(Math.random() * audios.length)];
-                return { speaker: s, audio: randomAudio };
-            }).filter(Boolean);
+        const loadAudioForSpeaker = async (speaker, excludeAudios = []) => {
+            const audios = speakerAudios[speaker] || [];
+            const availableAudios = audios.filter(a => !excludeAudios.includes(a));
+            
+            if (availableAudios.length === 0) {
+                console.error(`No more audio files available for ${speaker}`);
+                return null;
+            }
 
-            const shuffled = [...selectedQuotes].sort(() => Math.random() - 0.5);
+            const randomAudio = availableAudios[Math.floor(Math.random() * availableAudios.length)];
+            
+            try {
+                const response = await fetch(randomAudio);
+                if (!response.ok) {
+                    console.error(`Failed to fetch audio: ${randomAudio} - Status: ${response.status}`);
+                    // Try another audio for this speaker
+                    return loadAudioForSpeaker(speaker, [...excludeAudios, randomAudio]);
+                }
+                const arrayBuffer = await response.arrayBuffer();
+                const buffer = await audioCtxRef.current.decodeAudioData(arrayBuffer);
+                return { speaker, audio: randomAudio, buffer };
+            } catch (error) {
+                console.error(`Error loading audio for ${speaker}: ${randomAudio}`, error);
+                // Try another audio for this speaker
+                return loadAudioForSpeaker(speaker, [...excludeAudios, randomAudio]);
+            }
+        };
+
+        const init = async () => {
+            const loadedQuotes = [];
+            const map = {};
+
+            // Load quotes for each speaker, retrying if needed
+            for (const speaker of speakers) {
+                const result = await loadAudioForSpeaker(speaker);
+                if (result) {
+                    loadedQuotes.push({ speaker: result.speaker, audio: result.audio });
+                    map[result.audio] = result.buffer;
+                }
+            }
+
+            const shuffled = [...loadedQuotes].sort(() => Math.random() - 0.5);
             setPool(shuffled);
 
             const initialAssignments = {};
             speakers.forEach(s => initialAssignments[s] = null);
             setAssignments(initialAssignments);
 
-            const map = {};
-            for (let q of shuffled) {
-                try {
-                    const response = await fetch(q.audio);
-                    if (!response.ok) {
-                        console.error(`Failed to fetch audio: ${q.audio} - Status: ${response.status}`);
-                        continue;
-                    }
-                    const arrayBuffer = await response.arrayBuffer();
-                    map[q.audio] = await audioCtxRef.current.decodeAudioData(arrayBuffer);
-                } catch (error) {
-                    console.error(`Error loading audio for ${q.speaker}: ${q.audio}`, error);
-                }
-            }
             setBuffers(map);
         };
         init();
@@ -78,12 +97,57 @@ function GuessQuote({ setTotalScore, onComplete }) {
         };
     }, []);
 
-    const playDisguised = (quote) => {
-        if (!quote || !buffers[quote.audio] || !audioCtxRef.current) {
-            if (quote && !buffers[quote.audio]) {
-                console.warn(`Audio buffer not available for: ${quote.speaker} - ${quote.audio}`);
+    const replaceQuote = async (oldQuote) => {
+        const audios = speakerAudios[oldQuote.speaker] || [];
+        const usedAudios = pool.map(q => q.audio).concat(Object.values(assignments).filter(Boolean).map(q => q.audio));
+        const availableAudios = audios.filter(a => !usedAudios.includes(a));
+        
+        if (availableAudios.length === 0) {
+            console.error(`No more audio files available for ${oldQuote.speaker}`);
+            return null;
+        }
+
+        const randomAudio = availableAudios[Math.floor(Math.random() * availableAudios.length)];
+        
+        try {
+            const response = await fetch(randomAudio);
+            if (!response.ok) {
+                console.error(`Failed to fetch replacement audio: ${randomAudio}`);
+                return null;
             }
+            const arrayBuffer = await response.arrayBuffer();
+            const buffer = await audioCtxRef.current.decodeAudioData(arrayBuffer);
+            
+            const newQuote = { speaker: oldQuote.speaker, audio: randomAudio };
+            
+            // Update buffers
+            setBuffers(prev => ({ ...prev, [randomAudio]: buffer }));
+            
+            // Update pool
+            setPool(prev => prev.map(q => q.audio === oldQuote.audio ? newQuote : q));
+            
+            return newQuote;
+        } catch (error) {
+            console.error(`Error loading replacement audio for ${oldQuote.speaker}:`, error);
+            return null;
+        }
+    };
+
+    const playDisguised = async (quote) => {
+        if (!quote || !audioCtxRef.current) {
             return;
+        }
+
+        // If buffer is not available, try to replace the quote
+        if (!buffers[quote.audio]) {
+            console.warn(`Audio buffer not available for: ${quote.speaker} - ${quote.audio}. Attempting to replace...`);
+            const newQuote = await replaceQuote(quote);
+            if (newQuote && buffers[newQuote.audio]) {
+                quote = newQuote;
+            } else {
+                console.error(`Could not replace quote for ${quote.speaker}`);
+                return;
+            }
         }
 
         if (sourceRef.current) {

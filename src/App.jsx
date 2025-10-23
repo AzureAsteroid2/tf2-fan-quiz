@@ -15,6 +15,9 @@ import {useCallback, useEffect, useRef, useState} from "react";
 import ClassGuess from "./components/ClassGuess.jsx";
 import confetti from 'canvas-confetti';
 
+// Debug mode - set to false to hide all debug buttons
+const DEBUG_MODE = true;
+
 function MobileWarning({ onDismiss }) {
     return (
         <div className="mobile-warning-overlay">
@@ -290,6 +293,11 @@ function App() {
         setIsStarted(true);
     };
 
+    const jumpToPhase = (phaseName) => {
+        setIsStarted(true);
+        setPhase(phaseName);
+    };
+
     const handleAdClose = () => {
         setShowAdPopup(false);
         setPopupAd(null);
@@ -310,17 +318,33 @@ function App() {
                             <h1>Are you a Team Fortress 2 Fan?</h1>
                             <button className="start-button" onClick={handleStart}>Start Quiz</button>
                             
-                            <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
-                                <p style={{ fontSize: '0.9rem', opacity: 0.7 }}>Test Grades:</p>
-                                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
-                                    <button className="gamble-button" onClick={() => testGrade(100)}>S (100%)</button>
-                                    <button className="gamble-button" onClick={() => testGrade(95)}>A (95%)</button>
-                                    <button className="gamble-button" onClick={() => testGrade(85)}>B (85%)</button>
-                                    <button className="gamble-button" onClick={() => testGrade(75)}>C (75%)</button>
-                                    <button className="gamble-button" onClick={() => testGrade(65)}>D (65%)</button>
-                                    <button className="gamble-button" onClick={() => testGrade(50)}>F (50%)</button>
-                                </div>
-                            </div>
+                            {DEBUG_MODE && (
+                                <>
+                                    <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
+                                        <p style={{ fontSize: '0.9rem', opacity: 0.7 }}>Test Grades:</p>
+                                        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                                            <button className="gamble-button" onClick={() => testGrade(100)}>S (100%)</button>
+                                            <button className="gamble-button" onClick={() => testGrade(95)}>A (95%)</button>
+                                            <button className="gamble-button" onClick={() => testGrade(85)}>B (85%)</button>
+                                            <button className="gamble-button" onClick={() => testGrade(75)}>C (75%)</button>
+                                            <button className="gamble-button" onClick={() => testGrade(65)}>D (65%)</button>
+                                            <button className="gamble-button" onClick={() => testGrade(50)}>F (50%)</button>
+                                        </div>
+                                    </div>
+
+                                    <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
+                                        <p style={{ fontSize: '0.9rem', opacity: 0.7 }}>Jump to Phase:</p>
+                                        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                                            <button className="gamble-button" onClick={() => jumpToPhase('first')}>Questions 1</button>
+                                            <button className="gamble-button" onClick={() => jumpToPhase('pong')}>Pong</button>
+                                            <button className="gamble-button" onClick={() => jumpToPhase('second')}>Questions 2</button>
+                                            <button className="gamble-button" onClick={() => jumpToPhase('silhouette')}>Silhouette</button>
+                                            <button className="gamble-button" onClick={() => jumpToPhase('quote')}>Guess Quote</button>
+                                            <button className="gamble-button" onClick={() => jumpToPhase('done')}>Done</button>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
                         </>
                     )}
 
