@@ -16,7 +16,7 @@ import ClassGuess from "./components/ClassGuess.jsx";
 import confetti from 'canvas-confetti';
 
 // Debug mode - set to false to hide all debug buttons
-const DEBUG_MODE = true;
+const DEBUG_MODE = false;
 
 function MobileWarning({ onDismiss }) {
     return (
