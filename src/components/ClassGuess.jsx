@@ -18,12 +18,12 @@ function ClassGuess({ setTotalScore, onComplete }) {
     const [isGameOver, setIsGameOver] = useState(false);
     const [score, setScore] = useState(0);
     const [isDark, setIsDark] = useState(false);
+    const [imageEffects, setImageEffects] = useState({});
 
     useEffect(() => {
         const checkDarkMode = () => {
             setIsDark(document.body.classList.contains('dark-mode'));
         };
-        checkDarkMode();
         const observer = new MutationObserver(checkDarkMode);
         observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
         return () => observer.disconnect();
@@ -35,8 +35,89 @@ function ClassGuess({ setTotalScore, onComplete }) {
         const initialAssignments = {};
         classes.forEach(c => initialAssignments[c.name] = null);
         setAssignments(initialAssignments);
-    }, []);
 
+        // Define base effect types
+        const baseEffects = [
+            { name: 'normal', filter: '', transform: '', overflow: 'visible' },
+            { name: 'blur', filter: 'blur(6px)', transform: '', overflow: 'visible' },
+            { name: 'pixelate', filter: 'contrast(1000%) blur(2px)', transform: '', overflow: 'visible' },
+            { name: 'stretch-horizontal', filter: '', transform: 'scaleX(1.5)', overflow: 'hidden' },
+            { name: 'stretch-vertical', filter: '', transform: 'scaleY(1.5)', overflow: 'hidden' },
+            { name: 'squish-horizontal', filter: '', transform: 'scaleX(0.45)', overflow: 'visible' },
+            { name: 'squish-vertical', filter: '', transform: 'scaleY(0.45)', overflow: 'visible' },
+            { name: 'rotate', filter: '', transform: '', overflow: 'hidden' }, // rotation will be added
+        ];
+
+        // Additional modifiers that can be combined
+        const hueRotations = [0, 60, 120, 180, 240, 300]; // Different hue shifts
+        const rotations = [45, 90, 135, 180, 225, 270, 315];
+
+        // Generate unique combinations for each class
+        const effects = {};
+        const usedCombinations = new Set();
+        const usedBaseEffects = new Set();
+        
+        // Shuffle base effects to randomize assignment order
+        const shuffledBaseEffects = [...baseEffects].sort(() => Math.random() - 0.5);
+        
+        classes.forEach((cls, index) => {
+            let combination;
+            let attempts = 0;
+            
+            do {
+                // Use base effect in order for first 8, then random for the 9th
+                const baseEffect = index < baseEffects.length 
+                    ? shuffledBaseEffects[index] 
+                    : baseEffects[Math.floor(Math.random() * baseEffects.length)];
+                
+                // Skip if this base effect is already used (prevents double-stacking)
+                if (usedBaseEffects.has(baseEffect.name) && attempts < 20) {
+                    attempts++;
+                    continue;
+                }
+                
+                // Randomly decide if we add hue rotation (50% chance, but not for normal, blur, or pixelate)
+                const canAddHue = baseEffect.name !== 'normal' && baseEffect.name !== 'blur' && baseEffect.name !== 'pixelate';
+                const addHue = canAddHue && Math.random() > 0.5;
+                const hueRotation = addHue ? hueRotations[Math.floor(Math.random() * hueRotations.length)] : 0;
+                
+                // Build filter string
+                let filterParts = [];
+                if (baseEffect.filter) filterParts.push(baseEffect.filter);
+                if (hueRotation > 0) filterParts.push(`hue-rotate(${hueRotation}deg)`);
+                const filter = filterParts.length > 0 ? filterParts.join(' ') : 'none';
+                
+                // Build transform string
+                let transformParts = [];
+                if (baseEffect.transform) transformParts.push(baseEffect.transform);
+                if (baseEffect.name === 'rotate') {
+                    const rotation = rotations[Math.floor(Math.random() * rotations.length)];
+                    transformParts.push(`rotate(${rotation}deg)`);
+                }
+                const transform = transformParts.length > 0 ? transformParts.join(' ') : 'none';
+                
+                // Create unique key for this combination
+                const combinationKey = `${baseEffect.name}-${hueRotation}-${transform}`;
+                
+                if (!usedCombinations.has(combinationKey) || attempts > 20) {
+                    usedCombinations.add(combinationKey);
+                    usedBaseEffects.add(baseEffect.name);
+                    combination = {
+                        type: baseEffect.name,
+                        filter,
+                        transform,
+                        overflow: baseEffect.overflow
+                    };
+                    break;
+                }
+                attempts++;
+            } while (attempts < 30);
+            
+            effects[cls.name] = combination;
+        });
+        
+        setImageEffects(effects);
+    }, []);
     const handleDrop = (ev, targetSlot) => {
         ev.preventDefault();
         const data = ev.dataTransfer.getData('application/json');
@@ -127,7 +208,8 @@ function ClassGuess({ setTotalScore, onComplete }) {
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
-                                        transition: 'transform 0.25s ease, box-shadow 0.25s ease'
+                                        transition: 'transform 0.25s ease, box-shadow 0.25s ease',
+                                        overflow: imageEffects[cls.name]?.overflow || 'visible'
                                     }}
                                     draggable
                                     onDragStart={ev => ev.dataTransfer.setData('application/json', JSON.stringify(cls))}
@@ -147,7 +229,10 @@ function ClassGuess({ setTotalScore, onComplete }) {
                                             width: '100%',
                                             height: '100%',
                                             objectFit: 'contain',
-                                            pointerEvents: 'none'
+                                            pointerEvents: 'none',
+                                            filter: imageEffects[cls.name]?.filter || 'none',
+                                            transform: imageEffects[cls.name]?.transform || 'none',
+                                            transition: 'all 0.3s ease'
                                         }}
                                     />
                                 </div>
@@ -191,7 +276,8 @@ function ClassGuess({ setTotalScore, onComplete }) {
                                                     padding: '4px',
                                                     display: 'flex',
                                                     alignItems: 'center',
-                                                    justifyContent: 'center'
+                                                    justifyContent: 'center',
+                                                    overflow: imageEffects[assignments[slot.name].name]?.overflow || 'visible'
                                                 }}
                                                 draggable
                                                 onDragStart={ev => ev.dataTransfer.setData('application/json', JSON.stringify(assignments[slot.name]))}
@@ -203,7 +289,10 @@ function ClassGuess({ setTotalScore, onComplete }) {
                                                         width: '100%',
                                                         height: '100%',
                                                         objectFit: 'contain',
-                                                        pointerEvents: 'none'
+                                                        pointerEvents: 'none',
+                                                        filter: imageEffects[assignments[slot.name].name]?.filter || 'none',
+                                                        transform: imageEffects[assignments[slot.name].name]?.transform || 'none',
+                                                        transition: 'all 0.3s ease'
                                                     }}
                                                 />
                                             </div>
