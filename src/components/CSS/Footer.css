@@ -114,6 +114,14 @@ body.dark-mode .button-group button:hover {
     font-size: 0.9em;
 }
 
+.song-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+    opacity: 0.7;
+    margin-right: 12px;
+    font-style: italic;
+}
+
 body.light-mode .volume-input {
     background: rgba(255, 255, 255, 0.9);
     color: var(--text-light);
@@ -163,6 +171,18 @@ body.dark-mode .volume-input:focus {
 
 .dark-mode .volume-control input[type="range"]::-moz-range-thumb {
     background: var(--text-dark);
+}
+
+.github-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.github-container a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .github {

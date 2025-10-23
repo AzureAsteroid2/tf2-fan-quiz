@@ -53,6 +53,12 @@ function Footer() {
         }
     }, [currentSongIndex, volume, isPlaying]);
 
+    const getCurrentSongName = () => {
+        const fullPath = songs[currentSongIndex];
+        const fileName = fullPath.split('/').pop(); // Get filename
+        return fileName.replace('.mp3', ''); // Remove extension
+    };
+
     return (
         <footer className="boring-footer">
             <div className="audio-controls">
@@ -72,6 +78,9 @@ function Footer() {
                 </audio>
 
                 <div className="volume-control">
+                    <span className="song-name">
+                        {getCurrentSongName()}
+                    </span>
                     <label htmlFor="volume">Volume:</label>
                     <input
                         type="number"
@@ -84,9 +93,11 @@ function Footer() {
                     <span className="volume-symbol">%</span>
                 </div>
             </div>
-            <a href="https://github.com/AzureAsteroid2/tf2-fan-quiz" target="_blank" rel="noopener noreferrer">
-                <img alt="github" src={github} className="logo github" />
-            </a>
+            <div className="github-container">
+                <a href="https://github.com/AzureAsteroid2/tf2-fan-quiz" target="_blank" rel="noopener noreferrer">
+                    <img alt="github" src={github} className="logo github" />
+                </a>
+            </div>
         </footer>
     );
 }

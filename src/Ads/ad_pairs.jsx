@@ -31,6 +31,16 @@ const adPairs = [
     },
     {
         left: {
+            image: "./Images/ads/dont_do_drugs.webp",
+            url: "https://www.youtube.com/watch?v=zs74NYZhWsE",
+        },
+        right: {
+            image: "./Images/ads/CRACK_YUMMY.jpeg",
+            url: "https://youtu.be/SChnJDfmrSU?si=-1fcdNLJPBoIE7CQ&t=19135",
+        }
+    },
+    {
+        left: {
             image: "./Images/ads/were_recruiting_tf2_ai.png",
             url: "https://jobs.mchire.com/jobs?page_size=10&page_number=1&keyword=crew%20member&sort_by=score&sort_order=DESC",
         },
