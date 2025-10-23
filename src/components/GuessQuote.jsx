@@ -24,6 +24,7 @@ function GuessQuote({ setTotalScore, onComplete }) {
     const [score, setScore] = useState(0);
     const [buffers, setBuffers] = useState({});
     const [isDark, setIsDark] = useState(false);
+    const [voiceEffects, setVoiceEffects] = useState({});
     const audioCtxRef = useRef(null);
     const sourceRef = useRef(null);
 
@@ -89,6 +90,47 @@ function GuessQuote({ setTotalScore, onComplete }) {
             setAssignments(initialAssignments);
 
             setBuffers(map);
+
+            // Generate random voice effects for each quote with guaranteed distribution
+            const effects = {};
+            
+            const deepVoices = [
+                { playbackRate: 0.6, filterType: 'lowshelf', filterGain: 8 }, // Very deep
+                { playbackRate: 0.7, filterType: 'lowshelf', filterGain: 6 }, // Deep
+                { playbackRate: 0.75, filterType: 'lowshelf', filterGain: 5 }, // Deep
+            ];
+            
+            const chipmunkVoices = [
+                { playbackRate: 1.6, filterType: 'highshelf', filterGain: 8 }, // Very high-pitched fast
+                { playbackRate: 1.5, filterType: 'highshelf', filterGain: 7 }, // High-pitched fast
+                { playbackRate: 1.4, filterType: 'highshelf', filterGain: 6 }, // High-pitched fast
+            ];
+            
+            const otherVoices = [
+                { playbackRate: 1.2, filterType: 'highshelf', filterGain: 4 }, // Slightly high
+                { playbackRate: 0.85, filterType: 'lowshelf', filterGain: 3 }, // Slightly deep
+                { playbackRate: 1.3, filterType: null, filterGain: 0 }, // Fast normal
+            ];
+            
+            const normalVoice = { playbackRate: 1.0, filterType: null, filterGain: 0 };
+            
+            // Create assignment pool: 3 deep + 3 chipmunk + 1 normal + 2 random
+            const assignmentPool = [
+                ...deepVoices,
+                ...chipmunkVoices,
+                normalVoice,
+                ...otherVoices.sort(() => Math.random() - 0.5).slice(0, 2)
+            ];
+            
+            // Shuffle the assignment pool
+            const shuffledAssignments = assignmentPool.sort(() => Math.random() - 0.5);
+            
+            // Assign effects to quotes
+            loadedQuotes.forEach((quote, index) => {
+                effects[quote.audio] = shuffledAssignments[index];
+            });
+
+            setVoiceEffects(effects);
         };
         init();
 
@@ -157,15 +199,24 @@ function GuessQuote({ setTotalScore, onComplete }) {
 
         const source = audioCtxRef.current.createBufferSource();
         source.buffer = buffers[quote.audio];
-        source.playbackRate.value = 0.8; // Down-pitch
+        
+        // Get the voice effect for this quote
+        const effect = voiceEffects[quote.audio] || { playbackRate: 1.0, filterType: null, filterGain: 0 };
+        source.playbackRate.value = effect.playbackRate;
 
-        const filter = audioCtxRef.current.createBiquadFilter();
-        filter.type = 'lowshelf';
-        filter.frequency.value = 1000;
-        filter.gain.value = 5; // Boost bass
+        // Apply filter if specified
+        if (effect.filterType) {
+            const filter = audioCtxRef.current.createBiquadFilter();
+            filter.type = effect.filterType;
+            filter.frequency.value = 1000;
+            filter.gain.value = effect.filterGain;
 
-        source.connect(filter);
-        filter.connect(audioCtxRef.current.destination);
+            source.connect(filter);
+            filter.connect(audioCtxRef.current.destination);
+        } else {
+            source.connect(audioCtxRef.current.destination);
+        }
+        
         source.start(0);
 
         sourceRef.current = source;
