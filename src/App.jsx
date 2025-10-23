@@ -222,7 +222,7 @@ function App() {
 
             // Trigger failure effect for F rank
             if (grade === "F") {
-                const duration = 3000; // 3 seconds
+                const duration = 5000; // 5 seconds
                 const end = Date.now() + duration;
 
                 const frame = () => {
@@ -242,7 +242,7 @@ function App() {
                 };
                 frame();
 
-                // Show job jumpscare after 3 seconds
+                // Show job jumpscare after a few seconds
                 setTimeout(() => {
                     setShowJobJumpscare(true);
                 }, 3000);
