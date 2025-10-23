@@ -9,6 +9,8 @@ function Question({ question, answers, picture, onNextQuestion }) {
     const [cycleInterval, setCycleInterval] = useState(null);
     const gambleAudioStart = useRef(new Audio("./sounds/gamble_start.mp3"));
     const gambleAudioEnd = useRef(new Audio("./sounds/gamble_end.mp3"));
+    const successAudio = useRef(new Audio("./sounds/success.mp3"));
+    const failAudio = useRef(new Audio("./sounds/fail.mp3"));
 
 
     const handleAnswerSelect = (answer) => {
@@ -61,6 +63,17 @@ function Question({ question, answers, picture, onNextQuestion }) {
 
     const handleNext = () => {
         if (selectedAnswer) {
+            // Find the highest value answer
+            const maxValue = Math.max(...answers.map(a => a.value));
+            const isTopAnswer = selectedAnswer.value === maxValue;
+            
+            // Play appropriate sound
+            const audio = isTopAnswer ? successAudio.current : failAudio.current;
+            audio.currentTime = 0;
+            audio.play().catch((e) => {
+                console.log("Sound play blocked", e);
+            });
+            
             onNextQuestion(selectedAnswer.value);
             setSelectedAnswer(null);
             setIsGambling(false);
