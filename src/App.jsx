@@ -225,6 +225,105 @@ function App() {
                 frame();
             }
 
+            // Trigger effect for A rank - Red confetti burst
+            if (grade === "A") {
+                const duration = 2000;
+                const end = Date.now() + duration;
+
+                const frame = () => {
+                    confetti({
+                        particleCount: 2,
+                        angle: 60,
+                        spread: 45,
+                        origin: { x: 0 },
+                        colors: ['#dc2626', '#ef4444', '#f87171', '#fca5a5']
+                    });
+                    confetti({
+                        particleCount: 2,
+                        angle: 120,
+                        spread: 45,
+                        origin: { x: 1 },
+                        colors: ['#dc2626', '#ef4444', '#f87171', '#fca5a5']
+                    });
+
+                    if (Date.now() < end) {
+                        requestAnimationFrame(frame);
+                    }
+                };
+                frame();
+            }
+
+            // Trigger effect for B rank - Blue sparkles from center
+            if (grade === "B") {
+                const duration = 1500;
+                const end = Date.now() + duration;
+
+                const frame = () => {
+                    confetti({
+                        particleCount: 1,
+                        angle: 90,
+                        spread: 360,
+                        origin: { x: 0.5, y: 0.5 },
+                        colors: ['#2563eb', '#3b82f6', '#60a5fa'],
+                        gravity: 0.5,
+                        scalar: 0.7
+                    });
+
+                    if (Date.now() < end) {
+                        requestAnimationFrame(frame);
+                    }
+                };
+                frame();
+            }
+
+            // Trigger effect for C rank - Green particles from top
+            if (grade === "C") {
+                const duration = 1000;
+                const end = Date.now() + duration;
+
+                const frame = () => {
+                    confetti({
+                        particleCount: 1,
+                        angle: 90,
+                        spread: 60,
+                        origin: { x: 0.5, y: 0 },
+                        colors: ['#16a34a', '#22c55e', '#4ade80'],
+                        gravity: 1.2,
+                        scalar: 0.6
+                    });
+
+                    if (Date.now() < end) {
+                        requestAnimationFrame(frame);
+                    }
+                };
+                frame();
+            }
+
+            // Trigger effect for D rank - Few orange particles
+            if (grade === "D") {
+                const duration = 800;
+                const end = Date.now() + duration;
+
+                const frame = () => {
+                    if (Math.random() > 0.5) { // Only 50% of frames
+                        confetti({
+                            particleCount: 1,
+                            angle: 90,
+                            spread: 40,
+                            origin: { x: 0.5, y: 0 },
+                            colors: ['#ea580c', '#f97316', '#fb923c'],
+                            gravity: 1.5,
+                            scalar: 0.5
+                        });
+                    }
+
+                    if (Date.now() < end) {
+                        requestAnimationFrame(frame);
+                    }
+                };
+                frame();
+            }
+
             // Trigger failure effect for F rank
             if (grade === "F") {
                 const duration = 5000; // 5 seconds
