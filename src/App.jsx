@@ -35,6 +35,7 @@ function App() {
     const [phase, setPhase] = useState("first"); // "first", "pong", "second", "silhouette", "quote", "done"
     const timerTime = 10;
     const [timer, setTimer] = useState(timerTime);
+    const [timerRanOut, setTimerRanOut] = useState(false);
     const timerIdRef = useRef(null);
     const [adPair, setAdPair] = useState(() => {
         const randomIndex = Math.floor(Math.random() * adPairs.length);
@@ -128,6 +129,7 @@ function App() {
             setTimer(prev => {
                 if (prev <= 1) {
                     clearInterval(timerIdRef.current);
+                    setTimerRanOut(true);
                     setPhase("done");
                     return 0;
                 }
@@ -387,8 +389,23 @@ function App() {
 
                                 {phase === "done" && (
                                     <div className="Score">
-                                        <h2>You have completed the quiz!!!</h2>
-                                        <button className="gamble-button" onClick={() => setPhase("grade")}>See Grade</button>
+                                        {timerRanOut ? (
+                                            <>
+                                                <h2 style={{ color: '#dc2626', marginBottom: '16px' }}>Time's Up!</h2>
+                                                <p style={{ marginBottom: '20px', fontSize: '1.1rem' }}>
+                                                    You have failed to properly complete the quiz in time.
+                                                </p>
+                                                <p style={{ marginBottom: '20px' }}>
+                                                    You can refresh the page to try again, or see your current score below.
+                                                </p>
+                                                <button className="gamble-button" onClick={() => setPhase("grade")}>See Grade</button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <h2>You have completed the quiz!!!</h2>
+                                                <button className="gamble-button" onClick={() => setPhase("grade")}>See Grade</button>
+                                            </>
+                                        )}
                                     </div>
                                 )}
 
