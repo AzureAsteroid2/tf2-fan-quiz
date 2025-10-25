@@ -233,6 +233,12 @@ function GuessQuote({ setTotalScore, onComplete }) {
             fromSlot = Object.keys(assignments).find(s => assignments[s]?.audio === dragged.audio);
         }
         const currentInTarget = assignments[targetSlot];
+        
+        // Play drop sound
+        const dropSound = new Audio('./sounds/drop.wav');
+        dropSound.volume = 0.3;
+        dropSound.play().catch(e => console.log('Drop sound play blocked', e));
+        
         setAssignments(prev => ({...prev, [targetSlot]: dragged}));
         if (isFromPool) {
             let newPool = pool.filter(q => q.audio !== dragged.audio);
